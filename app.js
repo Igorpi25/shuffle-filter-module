@@ -77,10 +77,13 @@ var app = new Vue({
         },
     },
     methods: {
+        onFocus: function() {
+            this.selectElementById(this.id);
+        },
         selectElementById: function(id)  {
             var item = searchInSchemeById(this.scheme, id);
             this.selectedItem = item;
-        }
+        },
       }
 });
 
