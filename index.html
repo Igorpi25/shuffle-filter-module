@@ -61,6 +61,16 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="selectedItem.result!=null">
+                    <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                        <h2 class="text-bold">
+                            Result
+                        </h2>
+                    </div>
+                    <div class="flex flex-col p-2">
+                        {{selectedItem.result}}
+                    </div>
+                </div>
                 
             </div>
             <div v-else class="p-4">

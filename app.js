@@ -12,9 +12,21 @@ function searchInSchemeById(element, matchingId){
     return null;
 }
 
+function runFilter(scheme) {
+    return true;
+}
+
+function runScheme(scheme) {
+    switch(scheme.type) {
+        case 'filter': return runFilter(scheme);
+        default: return false;
+    }
+}
+
 var app = new Vue({ 
     el: '#app',
     data: {
+        runSchemeResult: '(runSchemeResult)',
         message: '(nothing selected)',
         selectedItem: Object, 
         scheme: {
@@ -32,10 +44,12 @@ var app = new Vue({
                                 {
                                     id:'A1',
                                     type:'filter',
+                                    result: true,
                                 },
                                 {
                                     id:'A2',
                                     type:'filter',
+                                    result: true,
                                 },
                             ],
                         },
@@ -46,10 +60,12 @@ var app = new Vue({
                                 {
                                     id:'B1',
                                     type:'filter',
+                                    result: true,
                                 },
                                 {
                                     id:'B2',
                                     type:'filter',
+                                    result: false,
                                 },
                             ],
                         },
@@ -58,6 +74,7 @@ var app = new Vue({
                 {
                     id: 'C1',
                     type: 'filter',
+                    result: true,
                 },
                 {
                     id: 'Z',
@@ -66,10 +83,12 @@ var app = new Vue({
                         {
                             id: 'Z1',
                             type: 'filter',
+                            result: false,
                         },
                         {
                             id: 'Z2',
                             type: 'filter',
+                            result: true,
                         },
                     ],
                 },
