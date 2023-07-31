@@ -13,12 +13,28 @@ function searchInSchemeById(element, matchingId){
 }
 
 function runFilter(scheme) {
+    return scheme.result;
+}
+
+function runRow(scheme) {
+    for(let child of scheme.childs) {
+        if(!runScheme(child))return false
+    }
     return true;
+}
+
+function runColumn(scheme) {
+    for(let child of scheme.childs) {
+        if(runScheme(child))return true
+    }
+    return false;
 }
 
 function runScheme(scheme) {
     switch(scheme.type) {
         case 'filter': return runFilter(scheme);
+        case 'row': return runRow(scheme);
+        case 'column': return runColumn(scheme);
         default: return false;
     }
 }
@@ -44,7 +60,7 @@ var app = new Vue({
                                 {
                                     id:'A1',
                                     type:'filter',
-                                    result: true,
+                                    result: false,
                                 },
                                 {
                                     id:'A2',
@@ -103,6 +119,9 @@ var app = new Vue({
             var item = searchInSchemeById(this.scheme, id);
             this.selectedItem = item;
         },
+        getSchemeResult: function(scheme) {
+            return runScheme(scheme);
+        }
       }
 });
 

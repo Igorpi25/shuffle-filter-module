@@ -47,6 +47,9 @@
                         <div>
                             type: {{ selectedItem.type }}
                         </div>
+                        <div v-if="selectedItem.result!=null" class="text-gray-400">
+                            result: {{selectedItem.result}}
+                        </div>
                     </div>
                 </div>
                 <div v-if="selectedItem.childs">
@@ -57,18 +60,20 @@
                     </div>
                     <div class="flex flex-col p-2">
                         <div v-for="child in selectedItem.childs" :key="child.id">
-                            {{ child.id }}: {{child.type}}
+                            {{ child.id }}: {{child.type}} <span class="text-gray-400"> -> {{getSchemeResult(child)}}</span>
                         </div>
                     </div>
                 </div>
-                <div v-if="selectedItem.result!=null">
+                <div>
                     <div class="flex bg-gray-200 p-2 rounded-b-lg">
                         <h2 class="text-bold">
                             Result
                         </h2>
                     </div>
                     <div class="flex flex-col p-2">
-                        {{selectedItem.result}}
+                        <div>
+                            getSchemeResult: {{getSchemeResult(selectedItem)}}
+                        </div>
                     </div>
                 </div>
                 
