@@ -6,88 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .flex-grow {
+            flex-grow: 1;
+        }
+        .sidebar {
+            width: 20rem;
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app" @focus="onFocus" tabindex="-1" class="flex h-screen w-screen bg-white">
-
-        <div class="flex flex-grow bg-white py-16 px-4 overflow-scroll">
-            <shuffle-row id="Main" >
-                <shuffle-column id="D">
-                    <shuffle-row id="A">
-                        <shuffle-filter id="A1"></shuffle-filter>
-                        <shuffle-filter id="A2"></shuffle-filter>
-                    </shuffle-row>
-                    <shuffle-column id="B">
-                        <shuffle-filter id="B1"></shuffle-filter>
-                        <shuffle-filter id="B2"></shuffle-filter>
-                    </shuffle-column>
-                </shuffle-column>
-                <shuffle-filter id="C1"></shuffle-filter>
-                <shuffle-column id="Z">
-                    <shuffle-filter id="Z1"></shuffle-filter>
-                    <shuffle-filter id="Z2"></shuffle-filter>
-                </shuffle-column>
-            </shuffle-row>
-
-            
-
-        </div>
-        
-        <div class="w-64 bg-gray-100">
-            <div v-if="selectedItem" class="flex flex-col border-1 border">
-                <div>
-                    <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                        <h2 class="text-bold">Properties</h2>
+        <div id="app" class="app-container">
+            <div class="flex h-screen w-screen bg-white">
+                <div class="flex-grow bg-white py-16 px-4 overflow-scroll">
+                    <div class="flex-grow bg-white py-16 px-4">
+                        <shuffle-chain :schema="scheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
                     </div>
-                    <div class="flex flex-col p-2">
+                    <div class="flex-grow bg-white py-16 px-4">
+                        <shuffle-chain :schema="secondScheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
+                    </div>
+                </div>
+                <div class="sidebar bg-gray-100">
+                    <div v-if="selectedItem" class="flex flex-col border-1 border">
                         <div>
+                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                            <h2 class="text-bold">Properties</h2>
+                        </div>
+                        <div class="flex flex-col p-2">
+                            <div v-if="selectedItem.id">
                             id: {{ selectedItem.id }}
-                        </div>
-                        <div>
+                            </div>
+                            <div v-if="selectedItem.type">
                             type: {{ selectedItem.type }}
+                            </div>
+                            <div v-if="selectedItem.result != null" class="text-gray-400">
+                            result: {{ selectedItem.result }}
+                            </div>
                         </div>
-                        <div v-if="selectedItem.result!=null" class="text-gray-400">
-                            result: {{selectedItem.result}}
                         </div>
-                    </div>
-                </div>
-                <div v-if="selectedItem.childs">
-                    <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                        <h2 class="text-bold">
-                            <span class="capitalize">{{selectedItem.type}}</span> childs
-                        </h2>
-                    </div>
-                    <div class="flex flex-col p-2">
-                        <div v-for="child in selectedItem.childs" :key="child.id">
-                            {{ child.id }}: {{child.type}} <span class="text-gray-400"> -> {{getSchemeResult(child)}}</span>
+                        <div v-if="selectedItem.childs">
+                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                            <h2 class="text-bold">
+                            <span class="capitalize">{{ selectedItem.type }}</span> childs
+                            </h2>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                        <h2 class="text-bold">
-                            Result
-                        </h2>
-                    </div>
-                    <div class="flex flex-col p-2">
+                        <div class="flex flex-col p-2">
+                            <div v-for="child in selectedItem.childs" :key="child.id">
+                            {{ child.id }}: {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
+                            </div>
+                        </div>
+                        </div>
                         <div>
-                            getSchemeResult: {{getSchemeResult(selectedItem)}}
+                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                            <h2 class="text-bold">
+                            Result
+                            </h2>
+                        </div>
+                        <div class="flex flex-col p-2">
+                            <div>
+                            getSchemeResult: {{ getSchemeResult(selectedItem) }}
+                            </div>
+                        </div>
                         </div>
                     </div>
+                    <div v-else class="p-4">
+                        {{ message }}
+                    </div>
                 </div>
-                
             </div>
-            <div v-else class="p-4">
-                {{message}}
-            </div>
-        </div>
-        
+        </div>      
     </div>
 
+    <script src="./schemas.js"></script>
     <script src="components/shuffle-filter.js"></script>
     <script src="components/shuffle-column.js"></script>
     <script src="components/shuffle-row.js"></script>
+    <script src="components/shuffle-chain.js"></script>
     <script src="libs/schemeSearch.js"></script>
     <script src="libs/schemeRunner.js"></script>
     <script src="app.js"></script>
