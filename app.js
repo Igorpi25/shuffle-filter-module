@@ -21,11 +21,39 @@ var app = new Vue({
                                     id:'A1',
                                     type:'filter',
                                     result: false,
+                                    params:[
+                                        {
+                                            name: 'Alpha',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['cafe', 'kids'],
+                                        },
+                                        {
+                                            name: 'Beta',
+                                            type: 'set',
+                                            source: 'local',
+                                            key: "ballooning-fest",
+                                        }
+                                    ]
                                 },
                                 {
                                     id:'A2',
                                     type:'filter',
                                     result: true,
+                                    params:[
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        },
+                                        {
+                                            name: 'Cafe',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
                                 },
                             ],
                         },
@@ -69,6 +97,14 @@ var app = new Vue({
                     ],
                 },
             ],
+        },
+        local: {
+            'ballooning-fest': ['sunday', 'beach'],
+            'hollydays': ['sunday','saturday'],
+        },
+        incoming: {
+            'user': ['cafe','kids'],
+            'place': ['cafe','coffe','tea','chicken','pizza','latte','free-hot-water'],
         },
     },
     methods: {

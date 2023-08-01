@@ -9,33 +9,80 @@
 </head>
 
 <body>
-    <div id="app" @focus="onFocus" tabindex="-1" class="flex h-screen w-screen bg-white">
+    <div id="app" @focus="onFocus" tabindex="-1" class="flex h-screen w-screen space-x-2 bg-white">
 
-        <div class="flex flex-grow bg-white py-16 px-4 overflow-scroll">
-            <shuffle-row id="Main" >
-                <shuffle-column id="D">
-                    <shuffle-row id="A">
-                        <shuffle-filter id="A1"></shuffle-filter>
-                        <shuffle-filter id="A2"></shuffle-filter>
-                    </shuffle-row>
-                    <shuffle-column id="B">
-                        <shuffle-filter id="B1"></shuffle-filter>
-                        <shuffle-filter id="B2"></shuffle-filter>
-                    </shuffle-column>
-                </shuffle-column>
-                <shuffle-filter id="C1"></shuffle-filter>
-                <shuffle-column id="Z">
-                    <shuffle-filter id="Z1"></shuffle-filter>
-                    <shuffle-filter id="Z2"></shuffle-filter>
-                </shuffle-column>
-            </shuffle-row>
+        <!-- White board -->
+        <div class="flex flex-grow bg-white py-16 px-4 items-center space-x-2 overflow-scroll">
 
+            <!-- Params -->
+            <div class="flex flex-col space-y-2 border p-4">
+
+                <!-- Incoming -->
+                <div class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
+                    <div class="flex justify-start">Incoming params:</div>
+                    <div v-for="(value, key) in incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
+                        {{key}}: {{value}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex-none">
+                ->
+            </div>
             
+            <div class="flex flex-col space-y-4 border p-4">
+
+                <!-- Scheme -->
+                <div class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
+                    <div class="flex justify-start">Scheme:</div>
+
+                    <shuffle-row id="Main" >
+                        <shuffle-column id="D">
+                            <shuffle-row id="A">
+                                <shuffle-filter id="A1"></shuffle-filter>
+                                <shuffle-filter id="A2"></shuffle-filter>
+                            </shuffle-row>
+                            <shuffle-column id="B">
+                                <shuffle-filter id="B1"></shuffle-filter>
+                                <shuffle-filter id="B2"></shuffle-filter>
+                            </shuffle-column>
+                        </shuffle-column>
+                        <shuffle-filter id="C1"></shuffle-filter>
+                        <shuffle-column id="Z">
+                            <shuffle-filter id="Z1"></shuffle-filter>
+                            <shuffle-filter id="Z2"></shuffle-filter>
+                        </shuffle-column>
+                    </shuffle-row>
+
+                </div>
+
+                <!-- Local -->
+                <div class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
+                    <div class="flex justify-start">Local params:</div>
+                    <div v-for="(value, key) in local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
+                        {{key}}: {{value}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex-none">
+                ->
+            </div>
+
+            <!-- Result -->
+            <div class="flex p-4 border">
+                1/0
+            </div>
 
         </div>
-        
-        <div class="w-64 bg-gray-100">
+
+        <!-- Side Menu -->
+        <div class="flex-none w-64 bg-gray-100">
             <div v-if="selectedItem" class="flex flex-col border-1 border">
+                
+                <!-- Properties -->
                 <div>
                     <div class="flex bg-gray-200 p-2 rounded-b-lg">
                         <h2 class="text-bold">Properties</h2>
@@ -52,6 +99,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Childs -->
                 <div v-if="selectedItem.childs">
                     <div class="flex bg-gray-200 p-2 rounded-b-lg">
                         <h2 class="text-bold">
@@ -64,6 +113,40 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Params -->
+                <div v-for="param in selectedItem.params" :key="param.name">
+                    <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                        <h2 class="text-bold">
+                            Param {{param.name}}
+                        </h2>
+                    </div>
+                    <div class="flex flex-col p-2">
+                        <div>
+                            name: {{ param.name }}
+                        </div>
+                        <div>
+                            type: {{ param.type }}
+                        </div>
+                        <div>
+                            source: {{param.source}}
+                        </div>
+                        <div v-if="param.key">
+                            key: {{param.key}}
+                        </div>
+                        <div v-if="param.source=='inline'">
+                            inline-value: {{param.value}}
+                        </div>
+                        <div v-if="param.source=='local'" class="text-gray-400">
+                            local-value: {{local[param.key]}}
+                        </div>
+                        <div v-if="param.source=='incoming'" class="text-gray-400">
+                            incoming-value: {{incoming[param.key]}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result -->
                 <div>
                     <div class="flex bg-gray-200 p-2 rounded-b-lg">
                         <h2 class="text-bold">
@@ -78,6 +161,7 @@
                 </div>
                 
             </div>
+            <!-- Nothing selected message -->
             <div v-else class="p-4">
                 {{message}}
             </div>
