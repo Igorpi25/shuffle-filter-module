@@ -19,14 +19,13 @@ var app = new Vue({
                             childs: [
                                 {
                                     id:'A1',
-                                    type:'filter',
-                                    result: false,
+                                    type:'filter-intersection',
                                     params:[
                                         {
                                             name: 'Alpha',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['cafe', 'kids'],
+                                            value: ['cafe', 'kids', 'beach'],
                                         },
                                         {
                                             name: 'Beta',
@@ -38,8 +37,7 @@ var app = new Vue({
                                 },
                                 {
                                     id:'A2',
-                                    type:'filter',
-                                    result: true,
+                                    type:'filter-intersection',
                                     params:[
                                         {
                                             name: 'User',
@@ -99,11 +97,11 @@ var app = new Vue({
             ],
         },
         local: {
-            'ballooning-fest': ['sunday', 'beach'],
+            'ballooning-fest': ['sunday', 'beach', 'family'],
             'hollydays': ['sunday','saturday'],
         },
         incoming: {
-            'user': ['cafe','kids'],
+            'user': ['cafe','kids','family'],
             'place': ['cafe','coffe','tea','chicken','pizza','latte','free-hot-water'],
         },
     },
@@ -116,7 +114,7 @@ var app = new Vue({
             this.selectedItem = item;
         },
         getSchemeResult: function(scheme) {
-            return runScheme(scheme);
+            return runScheme(scheme, this.local, this.incoming);
         }
       }
 });
