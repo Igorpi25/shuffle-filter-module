@@ -101,8 +101,18 @@
                     <div class="flex bg-gray-200 p-2 rounded-b-lg">
                         <h2 class="text-bold">Properties</h2>
                     </div>
-                    <div class="flex flex-col p-2">
+                    <div class="flex-grow bg-white py-16 px-4">
+                        <shuffle-chain :schema="secondScheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
+                    </div>
+                </div>
+                <div class="sidebar bg-gray-100">
+                    <div v-if="selectedItem" class="flex flex-col border-1 border">
                         <div>
+                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                            <h2 class="text-bold">Properties</h2>
+                        </div>
+                        <div class="flex flex-col p-2">
+                            <div v-if="selectedItem.id">
                             id: {{ selectedItem.id }}
                         </div>
                         <div v-if="selectedItem.type=='filter-intersection'">
@@ -110,6 +120,10 @@
                         </div>
                         <div v-else>
                             type: {{ selectedItem.type }}
+                            </div>
+                            <div v-if="selectedItem.result != null" class="text-gray-400">
+                            result: {{ selectedItem.result }}
+                            </div>
                         </div>
                         <div v-if="selectedItem.result!=null" class="text-gray-400">
                             mock-result: {{selectedItem.result}}
@@ -172,8 +186,20 @@
                     </div>
                     <div class="flex flex-col p-2">
                         <div>
-                            getSchemeResult: {{getSchemeResult(selectedItem)}}
+                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                            <h2 class="text-bold">
+                            Result
+                            </h2>
                         </div>
+                        <div class="flex flex-col p-2">
+                            <div>
+                            getSchemeResult: {{ getSchemeResult(selectedItem) }}
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div v-else class="p-4">
+                        {{ message }}
                     </div>
                 </div>
             </div>
