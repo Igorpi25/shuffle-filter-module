@@ -54,8 +54,8 @@
                     <shuffle-row id="Main" >
                         <shuffle-column id="D">
                             <shuffle-row id="A">
-                                <shuffle-filter id="A1"></shuffle-filter>
-                                <shuffle-filter id="A2"></shuffle-filter>
+                                <shuffle-filter-intersection id="A1"></shuffle-filter-intersection>
+                                <shuffle-filter-intersection id="A2"></shuffle-filter-intersection>
                             </shuffle-row>
                             <shuffle-column id="B">
                                 <shuffle-filter id="B1"></shuffle-filter>
@@ -105,11 +105,14 @@
                         <div>
                             id: {{ selectedItem.id }}
                         </div>
-                        <div>
+                        <div v-if="selectedItem.type=='filter-intersection'">
+                            type: <span class="bg-stone-300 rounded p-1">{{ selectedItem.type }}</span>
+                        </div>
+                        <div v-else>
                             type: {{ selectedItem.type }}
                         </div>
                         <div v-if="selectedItem.result!=null" class="text-gray-400">
-                            result: {{selectedItem.result}}
+                            mock-result: {{selectedItem.result}}
                         </div>
                     </div>
                 </div>
@@ -187,6 +190,7 @@
     <script src="components/ui/node-moving-subpanel.js"></script>
     <script src="components/ui/node-panel.js"></script>
     <script src="components/shuffle-filter.js"></script>
+    <script src="components/shuffle-filter-intersection.js"></script>
     <script src="components/shuffle-column.js"></script>
     <script src="components/shuffle-row.js"></script>
     <script src="components/shuffle-chain.js"></script>

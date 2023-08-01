@@ -26,7 +26,7 @@ var app = new Vue({
                                             name: 'Alpha',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['cafe', 'kids'],
+                                            value: ['cafe', 'kids', 'beach'],
                                         },
                                         {
                                             name: 'Beta',
