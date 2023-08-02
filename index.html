@@ -34,58 +34,18 @@
                         <shuffle-chain :schema="secondScheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
                     </div>
                 </div>
-                <div class="sidebar bg-gray-100">
-                    <div v-if="selectedItem" class="flex flex-col border-1 border">
-                        <div>
-                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                            <h2 class="text-bold">Properties</h2>
-                        </div>
-                        <div class="flex flex-col p-2">
-                            <div v-if="selectedItem.id">
-                            id: {{ selectedItem.id }}
-                            </div>
-                            <div v-if="selectedItem.type">
-                            type: {{ selectedItem.type }}
-                            </div>
-                            <div v-if="selectedItem.result != null" class="text-gray-400">
-                            result: {{ selectedItem.result }}
-                            </div>
-                        </div>
-                        </div>
-                        <div v-if="selectedItem.childs">
-                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                            <h2 class="text-bold">
-                            <span class="capitalize">{{ selectedItem.type }}</span> childs
-                            </h2>
-                        </div>
-                        <div class="flex flex-col p-2">
-                            <div v-for="child in selectedItem.childs" :key="child.id">
-                            {{ child.id }}: {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
-                            </div>
-                        </div>
-                        </div>
-                        <div>
-                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                            <h2 class="text-bold">
-                            Result
-                            </h2>
-                        </div>
-                        <div class="flex flex-col p-2">
-                            <div>
-                            getSchemeResult: {{ getSchemeResult(selectedItem) }}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div v-else class="p-4">
-                        {{ message }}
-                    </div>
+                <div v-if="selectedItem" class="sidebar bg-gray-100">
+                    <node-panel :selected-item="selectedItem" />
+                </div>
+                <div v-else class="p-4">
+                    {{ message }}
                 </div>
             </div>
         </div>      
     </div>
 
-    <script src="./schemas.js"></script>
+    <script src="./schemas.js"></script>  
+    <script src="components/ui/node-panel.js"></script>
     <script src="components/shuffle-filter.js"></script>
     <script src="components/shuffle-column.js"></script>
     <script src="components/shuffle-row.js"></script>

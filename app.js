@@ -15,9 +15,6 @@ var app = new Vue({
         },
         onSelectedChange(item) {
             this.selectedItem = item;
-        },
-        getSchemeResult: function (scheme) {
-            return runScheme(scheme);
         }
     },
 });
