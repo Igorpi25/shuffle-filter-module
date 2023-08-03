@@ -23,112 +23,24 @@
 </head>
 
 <body>
-    <div id="app" @focus="onFocus" tabindex="-1" class="flex h-screen w-screen space-x-2 bg-white">
-
-        <!-- White board -->
-        <div class="flex flex-grow bg-white py-16 px-4 items-center space-x-2 overflow-scroll">
-
-            <!-- Params -->
-            <div class="flex flex-col space-y-2 border p-4">
-
-                <!-- Incoming -->
-                <div class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
-                    <div class="flex justify-start">Incoming params:</div>
-                    <div v-for="(value, key) in incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="flex-none text-gray-400">
-                ->
-            </div>
-            
-            <div class="flex flex-col space-y-4 border p-4">
-
-                <!-- Scheme -->
-                <div class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
-                    <div class="flex justify-start">Scheme:</div>
-
-                    <shuffle-row id="Main" >
-                        <shuffle-column id="D">
-                            <shuffle-row id="A">
-                                <shuffle-filter-intersection id="A1"></shuffle-filter-intersection>
-                                <shuffle-filter-intersection id="A2"></shuffle-filter-intersection>
-                            </shuffle-row>
-                            <shuffle-column id="B">
-                                <shuffle-filter id="B1"></shuffle-filter>
-                                <shuffle-filter id="B2"></shuffle-filter>
-                            </shuffle-column>
-                        </shuffle-column>
-                        <shuffle-filter id="C1"></shuffle-filter>
-                        <shuffle-column id="Z">
-                            <shuffle-filter id="Z1"></shuffle-filter>
-                            <shuffle-filter id="Z2"></shuffle-filter>
-                        </shuffle-column>
-                    </shuffle-row>
-
-                </div>
-
-                <!-- Local -->
-                <div class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
-                    <div class="flex justify-start">Local params:</div>
-                    <div v-for="(value, key) in local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="flex-none text-gray-400">
-                ->
-            </div>
-
-            <!-- Result -->
-            <div class="flex p-4 border">
-                <span class="text-gray-600">1/0</span>
-            </div>
-
+    <div id="app" tabindex="-1" class="flex h-screen w-screen bg-white">
+        <div v-if="varsOfSchemes && varsOfSchemes.length" class="fixed top-0 left-0 z-50 bg-white py-2 px-4">
+            <span>Рабочая схема:</span>
+            <select v-model="selectedScheme">
+                <template v-for="item in varsOfSchemes">
+                    <option :value="item.value" selected="selectedChain.name == item.name">{{ item.name }}</option-->
+                </template>
+            </select>
         </div>
-
-        <!-- Side Menu -->
-        <div class="flex-none w-64 bg-gray-100">
-            <div v-if="selectedItem" class="flex flex-col border-1 border">
-                
-                <!-- Properties -->
-                <div>
-                    <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                        <h2 class="text-bold">Properties</h2>
-                    </div>
-                    <div class="flex-grow bg-white py-16 px-4">
-                        <shuffle-chain :schema="secondScheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
+        <div class="app-container">
+            <div class="flex h-screen w-screen bg-white">
+                <div class="flex-grow bg-white py-16 px-4 overflow-scroll">
+                    <div v-if="selectedScheme" class="flex-grow bg-white py-16 px-4">
+                        <shuffle-chain :schema="selectedScheme" @on-select-item="onSelectItem" />
                     </div>
                 </div>
-                <div class="sidebar bg-gray-100">
-                    <div v-if="selectedItem" class="flex flex-col border-1 border">
-                        <div>
-                        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                            <h2 class="text-bold">Properties</h2>
-                        </div>
-                        <div class="flex flex-col p-2">
-                            <div v-if="selectedItem.id">
-                            id: {{ selectedItem.id }}
-                        </div>
-                        <div v-if="selectedItem.type=='filter-intersection'">
-                            type: <span class="bg-stone-300 rounded p-1">{{ selectedItem.type }}</span>
-                        </div>
-                        <div v-else>
-                            type: {{ selectedItem.type }}
-                            </div>
-                            <div v-if="selectedItem.result != null" class="text-gray-400">
-                            result: {{ selectedItem.result }}
-                            </div>
-                        </div>
-                        <div v-if="selectedItem.result!=null" class="text-gray-400">
-                            mock-result: {{selectedItem.result}}
-                        </div>
-                    </div>
+                <div v-if="selectedItem" class="sidebar bg-gray-100">
+                    <node-panel :schema="selectedScheme" :selected-item="selectedItem" />
                 </div>
 
                 <!-- Childs -->

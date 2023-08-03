@@ -4,7 +4,8 @@ var app = new Vue({
     {
         runSchemeResult: '(runSchemeResult)',
         message: '(nothing selected)',
-        selectedItem: Object,
+        selectedScheme: {},
+        selectedItem: {},
         scheme: {
             id: 'Main',
             type: 'row',
