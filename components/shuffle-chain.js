@@ -5,29 +5,33 @@ Vue.component('shuffle-chain', {
             required: true,
         },
     },
+    emits: ['on-select-item'],
     data: function () {
         return {}
     },
     methods: {
-        onFocus: function () {
-            var item = this.selectElementById(this.id || this.schema.id);
-            this.$emit("selected-item-changed", item);
+        onChildrenSelectItem(item) {
+            if (item) {
+                this.$emit("on-select-item", item)
+            }
         },
-        onSelectedChange(item) {
-            this.$emit("selected-item-changed", item)
+        onSelectById(id) {
+            var item = this.selectElementById(id);
+            if (item) {
+                this.$emit("on-select-item", item)
+            }
         },
         selectElementById(id) {
-            var item = searchInSchemeById(this.schema, id);
-            this.$emit("selected-item-changed", item);
+            return searchInSchemeById(this.$props.schema, id)
         },
         getSchemeResult: function (scheme) {
             return runScheme(scheme);
         }
     },
     template: `
-    <component :is="schema.type" :id="schema.id" @focus="onFocus">
+    <component :is="schema.type" :id="schema.id" @on-select-id="onSelectById">
         <template v-if="schema.childs">
-            <shuffle-chain v-for="child in schema.childs" :key="child.id" :schema="child" :id="schema.id" @selected-item-changed="onSelectedChange" />
+            <shuffle-chain v-for="child in schema.childs" :key="child.id" :schema="child" :id="schema.id" @on-select-item="onChildrenSelectItem"/>
         </template>
     </component>
     `,

@@ -23,19 +23,24 @@
 </head>
 
 <body>
-    <div id="app" @focus="onFocus" tabindex="-1" class="flex h-screen w-screen bg-white">
-        <div id="app" class="app-container">
+    <div id="app" tabindex="-1" class="flex h-screen w-screen bg-white">
+        <div v-if="varsOfSchemes && varsOfSchemes.length" class="fixed top-0 left-0 z-50 bg-white py-2 px-4">
+            <span>Рабочая схема:</span>
+            <select v-model="selectedScheme">
+                <template v-for="item in varsOfSchemes">
+                    <option :value="item.value" selected="selectedChain.name == item.name">{{ item.name }}</option-->
+                </template>
+            </select>
+        </div>
+        <div class="app-container">
             <div class="flex h-screen w-screen bg-white">
                 <div class="flex-grow bg-white py-16 px-4 overflow-scroll">
-                    <div class="flex-grow bg-white py-16 px-4">
-                        <shuffle-chain :schema="scheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
-                    </div>
-                    <div class="flex-grow bg-white py-16 px-4">
-                        <shuffle-chain :schema="secondScheme" @focus="onFocus" @selected-item-changed="onSelectedChange" />
+                    <div v-if="selectedScheme" class="flex-grow bg-white py-16 px-4">
+                        <shuffle-chain :schema="selectedScheme" @on-select-item="onSelectItem" />
                     </div>
                 </div>
                 <div v-if="selectedItem" class="sidebar bg-gray-100">
-                    <node-panel :selected-item="selectedItem" />
+                    <node-panel :schema="selectedScheme" :selected-item="selectedItem" />
                 </div>
                 <div v-else class="p-4">
                     {{ message }}
@@ -45,6 +50,8 @@
     </div>
 
     <script src="./schemas.js"></script>  
+    <script src="components/ui/collapse-extend-text.js"></script>
+    <script src="components/ui/node-moving-subpanel.js"></script>
     <script src="components/ui/node-panel.js"></script>
     <script src="components/shuffle-filter.js"></script>
     <script src="components/shuffle-column.js"></script>

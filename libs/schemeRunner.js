@@ -1,5 +1,5 @@
 function runFilter(scheme) {
-    return scheme.result;
+    return "string" == typeof scheme.result ? "true" === scheme.result : scheme.result;
 }
 
 function runRow(scheme) {

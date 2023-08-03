@@ -4,16 +4,17 @@ var app = new Vue({
         return {
             runSchemeResult: '(runSchemeResult)',
             message: '(nothing selected)',
-            selectedItem: Object,
-            scheme: MainChain,
-            secondScheme: SecondChain
+            selectedScheme: {},
+            selectedItem: {},
         };
     },
-    methods: {
-        onFocus: function () {
-            this.selectedItem = {}
+    computed: {
+        varsOfSchemes() {
+            return chains || []
         },
-        onSelectedChange(item) {
+    },
+    methods: {
+        onSelectItem(item) {
             this.selectedItem = item;
         }
     },
