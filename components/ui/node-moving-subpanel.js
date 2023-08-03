@@ -53,31 +53,31 @@ Vue.component('node-moving-subpanel', {
         },
     },
     template: `
-    <div v-if="selectedItem" class="node-moving-subpanel">
+    <div v-if="selectedItem.type" class="node-moving-subpanel">
         <div v-if="selectedItem.type === 'shuffle-column' || selectedItem.type === 'shuffle-row'">
-            <p>Новый элемент</p>
+            <p>New</p>
             <div class="add-new-item">
                 <select v-model="newItemType">
-                    <option value="shuffle-column">Столбец</option>
-                    <option value="shuffle-row">Строку</option>
-                    <option value="shuffle-filter">Фильтр</option>
+                    <option value="shuffle-column">shuffle-column</option>
+                    <option value="shuffle-row">shuffle-row</option>
+                    <option value="shuffle-filter">shuffle-filter</option>
                 </select>
-                <button @click="addNewItem" class="px-6 py-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-r-lg focus:outline-none focus:ring focus:border-blue-300">Добавить</button>
+                <button @click="addNewItem" class="px-6 py-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-r-lg focus:outline-none focus:ring focus:border-blue-300">Add new</button>
             </div>
         </div>
 
         <div v-if="selectedItem.type === 'shuffle-filter'">
-            <p>Перемещение</p>
+            <p>Move</p>
             <div class="move-item">
-                <button @click="moveItem('forward')" class="px-6 py-1 bg-yellow-300 hover:bg-yellow-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">Вперед</button>
-                <button @click="moveItem('backward')" class="px-6 py-1 bg-lime-600 hover:bg-lime-500 text-white font-semibold rounded focus:outline-none focus:ring focus:bg-lime-600">Назад</button>
+                <button @click="moveItem('forward')" class="px-6 py-1 bg-yellow-300 hover:bg-yellow-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">Forward</button>
+                <button @click="moveItem('backward')" class="px-6 py-1 bg-lime-600 hover:bg-lime-500 text-white font-semibold rounded focus:outline-none focus:ring focus:bg-lime-600">Backward</button>
             </div >
         </div>
 
         <div>
-            <p>Удаление</p>
+            <p>Delete</p>
             <div class="move-item">
-                <button @click="deleteItem" class="px-6 py-1 bg-red-500 hover:bg-red-600 text-white font-semibold rounded focus:outline-none focus:ring focus:border-red-300">Удалить</button>
+                <button @click="deleteItem" class="px-6 py-1 bg-red-500 hover:bg-red-600 text-white font-semibold rounded focus:outline-none focus:ring focus:border-red-300">Delete</button>
             </div >
         </div>
     </div>

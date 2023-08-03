@@ -31,7 +31,7 @@ Vue.component('shuffle-chain', {
     template: `
     <component :is="schema.type" :id="schema.id" @on-select-id="onSelectById">
         <template v-if="schema.childs">
-            <shuffle-chain v-for="child in schema.childs" :key="child.id" :schema="child" :id="schema.id" @on-select-item="onChildrenSelectItem"/>
+            <shuffle-chain v-for="child in schema.childs" :key="child.id" :schema="child" :id="child.id" @on-select-item="onChildrenSelectItem"/>
         </template>
     </component>
     `,

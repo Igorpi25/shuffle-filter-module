@@ -1,10 +1,10 @@
 Vue.component('shuffle-filter-intersection', {
     data: function () {
-      return {}
+        return {}
     },
     methods: {
-        onFocus: function() {
-            this.$root.selectElementById(this.id);
+        onFocus: function () {
+            this.$emit("on-select-id", this.id)
         }
     },
     props: ['id'],
@@ -17,4 +17,4 @@ Vue.component('shuffle-filter-intersection', {
         <div class="flex-none text-gray-400">-</div>
     </div>
     `,
-  });
+});

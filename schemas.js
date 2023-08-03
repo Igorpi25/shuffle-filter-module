@@ -12,13 +12,39 @@ var MainChain = {
                     childs: [
                         {
                             id: 'A1',
-                            type: 'shuffle-filter',
-                            result: false,
+                            type: 'shuffle-filter-intersection',
+                            params: [
+                                {
+                                    name: 'Alpha',
+                                    type: 'set',
+                                    source: 'inline',
+                                    value: ['cafe', 'kids', 'beach'],
+                                },
+                                {
+                                    name: 'Beta',
+                                    type: 'set',
+                                    source: 'local',
+                                    key: "ballooning-fest",
+                                }
+                            ]
                         },
                         {
                             id: 'A2',
-                            type: 'shuffle-filter',
-                            result: true,
+                            type: 'shuffle-filter-intersection',
+                            params: [
+                                {
+                                    name: 'User',
+                                    type: 'set',
+                                    source: 'incoming',
+                                    key: 'user',
+                                },
+                                {
+                                    name: 'Cafe',
+                                    type: 'set',
+                                    source: 'incoming',
+                                    key: 'place',
+                                }
+                            ]
                         },
                     ],
                 },
@@ -56,11 +82,6 @@ var MainChain = {
                 },
                 {
                     id: 'Z2',
-                    type: 'shuffle-filter',
-                    result: true,
-                },
-                {
-                    id: 'Z3',
                     type: 'shuffle-filter',
                     result: true,
                 },

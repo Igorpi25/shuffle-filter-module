@@ -6,111 +6,24 @@ var app = new Vue({
         message: '(nothing selected)',
         selectedScheme: {},
         selectedItem: {},
-        scheme: {
-            id: 'Main',
-            type: 'row',
-            childs: [
-                {
-                    id: 'D',
-                    type: 'column',
-                    childs: [
-                        {
-                            id: 'A',
-                            type: 'row',
-                            childs: [
-                                {
-                                    id: 'A1',
-                                    type: 'filter',
-                                    result: false,
-                                    params: [
-                                        {
-                                            name: 'Alpha',
-                                            type: 'set',
-                                            source: 'inline',
-                                            value: ['cafe', 'kids', 'beach'],
-                                        },
-                                        {
-                                            name: 'Beta',
-                                            type: 'set',
-                                            source: 'local',
-                                            key: "ballooning-fest",
-                                        }
-                                    ]
-                                },
-                                {
-                                    id: 'A2',
-                                    type: 'filter',
-                                    result: true,
-                                    params: [
-                                        {
-                                            name: 'User',
-                                            type: 'set',
-                                            source: 'incoming',
-                                            key: 'user',
-                                        },
-                                        {
-                                            name: 'Cafe',
-                                            type: 'set',
-                                            source: 'incoming',
-                                            key: 'place',
-                                        }
-                                    ]
-                                },
-                            ],
-                        },
-                        {
-                            id: 'B',
-                            type: 'column',
-                            childs: [
-                                {
-                                    id: 'B1',
-                                    type: 'filter',
-                                    result: true,
-                                },
-                                {
-                                    id: 'B2',
-                                    type: 'filter',
-                                    result: false,
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    id: 'C1',
-                    type: 'filter',
-                    result: true,
-                },
-                {
-                    id: 'Z',
-                    type: 'column',
-                    childs: [
-                        {
-                            id: 'Z1',
-                            type: 'filter',
-                            result: false,
-                        },
-                        {
-                            id: 'Z2',
-                            type: 'filter',
-                            result: true,
-                        },
-                    ],
-                },
-            ],
-        },
         local: {
-            'ballooning-fest': ['sunday', 'beach'],
+            'ballooning-fest': ['sunday', 'beach', 'family'],
             'hollydays': ['sunday', 'saturday'],
         },
         incoming: {
-            'user': ['cafe', 'kids'],
+            'user': ['cafe', 'kids', 'family'],
             'place': ['cafe', 'coffe', 'tea', 'chicken', 'pizza', 'latte', 'free-hot-water'],
         },
     },
     computed: {
         varsOfSchemes() {
             return chains || []
+        },
+        serializedLocal() {
+            return JSON.stringify(this.local || {})
+        },
+        serializedIncoming() {
+            return JSON.stringify(this.incoming || {})
         }
     },
     methods: {

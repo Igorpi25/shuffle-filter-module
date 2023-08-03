@@ -14,14 +14,13 @@ function getParamValue(param, local, incoming) {
 function runFilterIntersection(scheme, local, incoming) {
     let first = getParamValue(scheme.params[0], local, incoming);
     let second = getParamValue(scheme.params[1], local, incoming);
-
-    let common = first.filter(x => second.indexOf(x) !== -1);
-
+    let common = Array.isArray(first) && Array.isArray(second) ? first.filter(x => second.indexOf(x) !== -1) : [];
     return common.length > 0;
 }
 
 function runFilter(scheme, local, incoming) {
-    return scheme.result === "string" && scheme.result === "true" ? true : scheme.result;
+    const result = "string" === typeof scheme.result ? scheme.result === "true" : !!scheme.result;
+    return result;
 }
 
 function runRow(scheme, local, incoming) {

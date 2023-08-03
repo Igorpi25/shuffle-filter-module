@@ -1,8 +1,5 @@
 Vue.component('node-panel', {
-    props: {
-        schema: Object,
-        selectedItem: Object,
-    },
+    props: ['local', 'incoming', 'schema', 'selectedItem'],
     data() {
         return {
         };
@@ -10,7 +7,7 @@ Vue.component('node-panel', {
     computed: {
         serializedSelectedItem() {
             return JSON.stringify(this.selectedItem);
-        },
+        }
     },
     methods: {
         selectElementById(id) {
@@ -20,7 +17,13 @@ Vue.component('node-panel', {
             return findParentShuffleElement(this.$props.schema, id)
         },
         getSchemeResult: function (scheme) {
-            return runScheme(scheme);
+            if (scheme) {
+                return runScheme(scheme, this.$props.local, this.$props.incoming);
+            }
+
+            if (this.$props.selectedItem) {
+                return runScheme(this.selectedItem, this.$props.local, this.$props.incoming);
+            }
         },
         handlerOnMoveItem: function ({ direction, id }) {
             const parent = this.selectParentById(id)
@@ -39,6 +42,14 @@ Vue.component('node-panel', {
                         parent.childs.splice(index - 1, 0, this.selectedItem);
                     }
                 }
+
+                // Назначение стиля :focus на элемент с выбранным id
+                this.$nextTick(() => {
+                    const selectedItemElement = document.getElementById(this.selectedItem.id);
+                    if (selectedItemElement) {
+                        selectedItemElement.focus();
+                    }
+                });
             }
         },
         handlerOnRemoveItem: function (id) {
@@ -80,38 +91,84 @@ Vue.component('node-panel', {
                     </div>
                     <span v-else>{{ selectedItem.result }}</span>
                 </div>
-            </div>
+            </div>           
         </div>
+
+        <!-- Childs -->
         <div v-if="selectedItem.childs">
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">
-                    <span class="capitalize">{{ selectedItem.type }}</span> childs
+                    #{{ selectedItem.id }} childs
                 </h2>
             </div>
             
             <div class="flex flex-col p-2">
                 <div v-for="child in selectedItem.childs" :key="child.id">
-                {{ child.id }}: {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
+                #{{ child.id }}: {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
                 </div>
             </div>
         </div>
-        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-            <h2 class="text-bold">Result</h2>
+
+        <!-- Params -->
+        <div v-for="param in selectedItem.params" :key="param.name">
+            <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                <h2 class="text-bold">#{{ selectedItem.id }} param {{param.name}}</h2>
+            </div>
+            <div class="flex flex-col p-2">
+                <div>
+                    name: {{ param.name }}
+                </div>
+                <div>
+                    type: {{ param.type }}
+                </div>
+                <div>
+                    source: {{param.source}}
+                </div>
+                <div v-if="param.key">
+                    key: {{param.key}}
+                </div>
+                <div v-if="param.source=='inline'">
+                    inline-value: {{param.value}}
+                </div>
+                <div v-if="param.source=='local'" class="text-gray-400">
+                    local-value: {{local[param.key]}}
+                </div>
+                <div v-if="param.source=='incoming'" class="text-gray-400">
+                    incoming-value: {{incoming[param.key]}}
+                </div>
+            </div>
         </div>
-        <div class="flex flex-col p-2 small">
-            <div>getSchemeResult: {{ getSchemeResult(selectedItem) }}</div>
+
+        <!-- Result -->
+        <div>
+            <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                <h2 class="text-bold">#{{ selectedItem.id }} result</h2>
+            </div>
+            <div class="flex flex-col p-2">
+                <div>
+                    getSchemeResult = {{ getSchemeResult(selectedItem) }}
+                </div>
+            </div>
         </div>
-        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-            <h2 class="text-bold">Операции</h2>
+
+        <!-- Operations -->
+        <div>
+            <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                <h2 class="text-bold">#{{ selectedItem.id }} operations</h2>
+            </div>
+            <div class="flex flex-col p-2">
+                <node-moving-subpanel :selected-item="selectedItem" @on-move-item="handlerOnMoveItem" @on-remove-item="handlerOnRemoveItem" />
+            </div>
         </div>
-        <div class="flex flex-col p-2">
-            <node-moving-subpanel :selected-item="selectedItem" @on-move-item="handlerOnMoveItem" @on-remove-item="handlerOnRemoveItem" />
-        </div>
-        <div class="flex bg-gray-200 p-2 rounded-b-lg">
-            <h2 class="text-bold">Выбранный элемент</h2>
-        </div>
-        <div class="flex flex-col p-2">
-            <collapse-extend-text :text="serializedSelectedItem" :maxLength="10" />
+
+        <!-- Selected item dump -->
+        <div>
+            <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                <h2 class="text-bold">#{{ selectedItem.id }} raw</h2>
+            </div>
+            <div class="flex flex-col p-2">
+                <collapse-extend-text :text="serializedSelectedItem" :maxLength="10" />
+            </div>
         </div>
     </div>
     `,
