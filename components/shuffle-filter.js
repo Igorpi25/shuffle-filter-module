@@ -1,11 +1,12 @@
 Vue.component('shuffle-filter', {
     data: function () {
-      return {}
+        return {}
     },
+    emits: ['on-select-id'],
     methods: {
-        onFocus: function() {
-            this.$root.selectElementById(this.id);
-        }
+        onFocus: function () {
+            this.$emit("on-select-id", this.id)
+        },
     },
     props: ['id'],
     template: `
@@ -17,4 +18,4 @@ Vue.component('shuffle-filter', {
         <div class="flex-none text-gray-400">-</div>
     </div>
     `,
-  });
+});
