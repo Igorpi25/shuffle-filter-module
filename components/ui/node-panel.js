@@ -68,28 +68,29 @@ Vue.component('node-panel', {
     },
     template: `
     <div v-if="selectedItem" class="flex flex-col border-1 border">
+        <!-- Properties -->
         <div>
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">Properties</h2>
             </div>
             <div class="flex flex-col p-2">
-                <div v-if="selectedItem.id">
+                <div v-if="selectedItem.id!=null">
                     <div v-if="'shuffle-filter' == selectedItem.type">
                         <input v-model="selectedItem.id" />
                     </div>
-                    <span v-else>{{ selectedItem.id }}</span>
+                    <span v-else>id: {{ selectedItem.id }}</span>
                     
                 </div>
 
                 <div v-if="selectedItem.type">
-                    <span>{{ selectedItem.type }}</span>
+                    <span>type: {{ selectedItem.type }}</span>
                 </div>
 
                 <div v-if="selectedItem.result != null" class="text-gray-400">
                     <div v-if="'shuffle-filter' == selectedItem.type">
                         <input v-model="selectedItem.result" />
                     </div>
-                    <span v-else>{{ selectedItem.result }}</span>
+                    <span v-else>type: {{ selectedItem.result }}</span>
                 </div>
             </div>           
         </div>
@@ -98,13 +99,13 @@ Vue.component('node-panel', {
         <div v-if="selectedItem.childs">
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">
-                    #{{ selectedItem.id }} childs
+                    Childs
                 </h2>
             </div>
             
             <div class="flex flex-col p-2">
                 <div v-for="child in selectedItem.childs" :key="child.id">
-                #{{ child.id }}: {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
+                    {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
                 </div>
             </div>
         </div>
@@ -112,7 +113,7 @@ Vue.component('node-panel', {
         <!-- Params -->
         <div v-for="param in selectedItem.params" :key="param.name">
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                <h2 class="text-bold">#{{ selectedItem.id }} param {{param.name}}</h2>
+                <h2 class="text-bold">Param: {{param.name}}</h2>
             </div>
             <div class="flex flex-col p-2">
                 <div>
@@ -142,7 +143,7 @@ Vue.component('node-panel', {
         <!-- Result -->
         <div>
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                <h2 class="text-bold">#{{ selectedItem.id }} result</h2>
+                <h2 class="text-bold">Result</h2>
             </div>
             <div class="flex flex-col p-2">
                 <div>
@@ -154,7 +155,7 @@ Vue.component('node-panel', {
         <!-- Operations -->
         <div>
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                <h2 class="text-bold">#{{ selectedItem.id }} operations</h2>
+                <h2 class="text-bold">Operations</h2>
             </div>
             <div class="flex flex-col p-2">
                 <node-moving-subpanel :selected-item="selectedItem" @on-move-item="handlerOnMoveItem" @on-remove-item="handlerOnRemoveItem" />
@@ -164,7 +165,7 @@ Vue.component('node-panel', {
         <!-- Selected item dump -->
         <div>
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                <h2 class="text-bold">#{{ selectedItem.id }} raw</h2>
+                <h2 class="text-bold">Raw</h2>
             </div>
             <div class="flex flex-col p-2">
                 <collapse-extend-text :text="serializedSelectedItem" :maxLength="10" />
