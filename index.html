@@ -19,6 +19,24 @@
             width: 20rem;
             flex-shrink: 0;
         }
+        @keyframes blink-animation {
+            0%, 100% {
+                outline-width: 2px;
+                outline-style: solid;
+                outline-color:red;
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+                outline-width: 2px;
+                outline-style: solid;
+                outline-color: #4f46e5;
+            }
+        }
+
+        .blink-animation {
+            animation: blink-animation 0.3s 2;
+        }
     </style>
 </head>
 
