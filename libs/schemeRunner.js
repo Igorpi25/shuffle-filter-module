@@ -12,10 +12,30 @@ function getParamValue(param, local, incoming) {
 }
 
 function runFilterIntersection(scheme, local, incoming) {
-    let first = getParamValue(scheme.params[0], local, incoming);
-    let second = getParamValue(scheme.params[1], local, incoming);
-    let common = Array.isArray(first) && Array.isArray(second) ? first.filter(x => second.indexOf(x) !== -1) : [];
-    return common.length > 0;
+    if (scheme.params.length % 2 !== 0) {
+        throw new Error('Number of params should be even.');
+    }
+
+    let params = scheme.params;
+    let result = true;
+
+    for (let i = 0; i < params.length; i += 2) {
+        let first = getParamValue(params[i], local, incoming);
+        let second = getParamValue(params[i + 1], local, incoming);
+
+        if (!Array.isArray(first) || !Array.isArray(second)) {
+            throw new Error('Params should be arrays.');
+        }
+
+        let common = first.filter(x => second.indexOf(x) !== -1);
+
+        if (common.length === 0) {
+            result = false;
+            break;
+        }
+    }
+
+    return result;
 }
 
 function runFilter(scheme, local, incoming) {
