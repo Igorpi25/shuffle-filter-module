@@ -29,6 +29,13 @@ var app = new Vue({
     methods: {
         onSelectItem(item) {
             this.selectedItem = item;
-        }
+        },
+        getSchemeResult() {
+            if (this.selectedScheme) {
+                return runScheme(this.selectedScheme, this.local, this.incoming);
+            } else {
+                return 'false';
+            }
+        },
     },
 });
