@@ -4,7 +4,7 @@ var app = new Vue({
     {
         runSchemeResult: '(runSchemeResult)',
         message: '(nothing selected)',
-        selectedScheme: {},
+        selectedScheme: chains[0].value,
         selectedItem: {},
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
