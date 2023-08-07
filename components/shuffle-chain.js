@@ -23,9 +23,6 @@ Vue.component('shuffle-chain', {
         },
         selectElementById(id) {
             return searchInSchemeById(this.$props.schema, id)
-        },
-        getSchemeResult: function (scheme) {
-            return runScheme(scheme);
         }
     },
     template: `

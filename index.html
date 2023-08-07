@@ -45,56 +45,49 @@
         <!-- Top panel -->
         <div v-if="varsOfSchemes && varsOfSchemes.length" class="fixed top-0 left-0 z-50 bg-white py-2 px-4">
             <span>Рабочая схема:</span>
-            <select v-model="selectedScheme">
+            <select v-model="selectedScheme" @change="onChangeSelectedScheme">
                 <template v-for="item in varsOfSchemes">
-                    <option :value="item.value" selected="selectedChain.name == item.name">{{ item.name }}</option>
+                    <option :value="item.value" selected="selectedScheme.name == item.name">{{ item.name }}</option>
                 </template>
             </select>
         </div>
 
         <!-- White board -->
-        <div class="flex flex-grow bg-white py-16 px-2 space-x-2 overflow-scroll">
+        <div v-if="selectedScheme" class="flex flex-grow bg-white py-16 px-2 space-x-2 overflow-scroll">
             <!-- Params -->
-            <div class="flex flex-col space-y-2 border p-4">
+            <div v-if="selectedScheme.params" class="flex flex-col space-y-2 border p-4">
                 <!-- Incoming -->
-                <div class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
+                <div v-if="selectedScheme.params?.incoming" class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
                     <div class="flex justify-start">Incoming params:</div>
-                    <div v-for="(value, key) in incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
+                    <div v-for="(value, key) in selectedScheme.params?.incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
                         {{key}}: {{value}}
                     </div>
                 </div>
                 <!-- Local -->
-                <div class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
+                <div v-if="selectedScheme.params?.local" class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
                     <div class="flex justify-start">Local params:</div>
-                    <div v-for="(value, key) in local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
+                    <div v-for="(value, key) in selectedScheme.params?.local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
                         {{key}}: {{value}}
                     </div>
                 </div>
             </div>
 
-            <div class="flex-none text-gray-400">
+            <div v-if="selectedScheme.scheme" class="flex-none text-gray-400">
                 ->
             </div>
         
             <!-- Scheme -->
-            <div class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
+            <div v-if="selectedScheme.scheme" class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
                 <div class="flex justify-start">Scheme</div>
-                <shuffle-scheme :local="local" :incoming="incoming">
-                    <shuffle-params-group>
-                        <shuffle-param name="Alpha" type="set" source="inline" :value="['cafe', 'kids', 'beach']" />
-                        <shuffle-param name="Beta" type="set" source="local" :value="local['ballooning-fest']" />
-                        <shuffle-param name="Gamma" type="set" source="incoming" :value="incoming['place']" />
-                    </shuffle-params-group>
-                    <shuffle-chain :schema="selectedScheme" @on-select-item="onSelectItem" />
-                </shuffle-scheme>
+                <shuffle-chain :schema="selectedScheme.scheme" @on-select-item="onSelectItem" />
             </div>
 
-            <div class="flex-none text-gray-400">
+            <div v-if="selectedScheme.scheme" class="flex-none text-gray-400">
                 ->
             </div>
 
             <!-- Result -->
-            <div class="flex items-center justify-center w-16 h-16 border">
+            <div v-if="selectedScheme.scheme" class="flex items-center justify-center w-16 h-16 border">
                 <span class="text-gray-600">{{getSchemeResult()}}</span>
             </div>  
              
@@ -102,8 +95,8 @@
 
         <!-- Side Menu -->
         <div class="flex-grow w-20 bg-gray-100">
-            <div v-if="selectedItem" class="flex flex-col border-1 border">
-                <node-panel :local="local" :incoming="incoming" :schema="selectedScheme" :selected-item="selectedItem" />
+            <div v-if="selectedItemIsNotEmpty" class="flex flex-col border-1 border">
+                <node-panel :local="selectedScheme?.params?.local"  :incoming="selectedScheme?.params?.incoming" :schema="selectedScheme.scheme" :selected-item="selectedItem" />
             </div>
         </div>
     </div>
