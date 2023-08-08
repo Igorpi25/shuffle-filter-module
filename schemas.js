@@ -731,6 +731,52 @@ var FamilyFunInPub = {
 var ActiveTigerAsIncomingParam = JSON.parse(JSON.stringify(ActiveTigerInFamilyRestoran));
 var FamilyFunAsIncomingParam = JSON.parse(JSON.stringify(FamilyFunInFamilyRestoran));
 
+var Places = [
+    {   
+        id: 'Family Restoran',
+        type: 'shuffle-aggregation-item',
+        value: [
+            'Рестораны',
+            'Винная карта',
+            'Чайная карта',
+            'Спокойная атмосфера',
+            'Веганское меню',
+            'Алкогольная карта',
+            'Детская комната',
+        ]
+    },
+    {
+        id: 'Italian Classic Restoran',
+        type: 'shuffle-aggregation-item',
+        value: [
+            'Рестораны',
+            'Кондиционеры на терассе',
+            'Вкусный кофе',
+            'Живая музыка',
+            'Винная карта',
+            'Сомилье',
+            'Чайная карта',
+            'Спокойная атмосфера',
+            'Веганское меню',
+            'Алкогольная карта',
+        ],
+    },
+    {
+        id: 'Scottish Pub',
+        type: 'shuffle-aggregation-item',
+        value: [
+            'Пабы',
+            'Живая музыка',
+            'Винная карта',
+            'Алкогольная карта',
+            'Крафтовое пиво',
+            'Пивная карта',
+            'Большие порции',
+            'Исконный стиль',
+        ],
+    }
+];
+
 var AggregationScheme = {
     id: 'AggregationScheme',
     type: 'shuffle-aggregation-filter',
@@ -738,51 +784,7 @@ var AggregationScheme = {
         {
             id: 'places-list',
             type: 'shuffle-aggregation-list',
-            childs: [
-                {   
-                    id: 'Family Restoran',
-                    type: 'shuffle-aggregation-item',
-                    value: [
-                        'Рестораны',
-                        'Винная карта',
-                        'Чайная карта',
-                        'Спокойная атмосфера',
-                        'Веганское меню',
-                        'Алкогольная карта',
-                        'Детская комната',
-                    ]
-                },
-                {
-                    id: 'Italian Classic Restoran',
-                    type: 'shuffle-aggregation-item',
-                    value: [
-                        'Рестораны',
-                        'Кондиционеры на терассе',
-                        'Вкусный кофе',
-                        'Живая музыка',
-                        'Винная карта',
-                        'Сомилье',
-                        'Чайная карта',
-                        'Спокойная атмосфера',
-                        'Веганское меню',
-                        'Алкогольная карта',
-                    ],
-                },
-                {
-                    id: 'Scottish Pub',
-                    type: 'shuffle-aggregation-item',
-                    value: [
-                        'Пабы',
-                        'Живая музыка',
-                        'Винная карта',
-                        'Алкогольная карта',
-                        'Крафтовое пиво',
-                        'Пивная карта',
-                        'Большие порции',
-                        'Исконный стиль',
-                    ],
-                }
-            ],
+            childs: Places,
         },
     ]
 };
@@ -792,7 +794,8 @@ var ActiveTigerAggregation = {
     type: 'aggregation',
     params: {
         incoming: {
-            chain: ActiveTigerAsIncomingParam
+            chain: ActiveTigerAsIncomingParam,
+            items: Places,
         }
     } ,
     scheme: JSON.parse(JSON.stringify(AggregationScheme)),
@@ -803,7 +806,8 @@ var FamilyFunAggregation = {
     type: 'aggregation',
     params: {
         incoming: {
-            chain: FamilyFunAsIncomingParam
+            chain: FamilyFunAsIncomingParam,
+            items: Places,
         }
     } ,
     scheme: JSON.parse(JSON.stringify(AggregationScheme)),
