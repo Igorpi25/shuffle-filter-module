@@ -1,5 +1,5 @@
 var CommonScheme = {
-    id: 'ActiveTiger',
+    id: 'CommonScheme',
     type: 'shuffle-column',
     childs: [
         {
@@ -474,6 +474,8 @@ var CommonScheme = {
 }
 
 var ActiveTigerInFamilyRestoran = {
+    id: 'ActiveTigerInFamilyRestoran',
+    type: 'filtering',
     params: {
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
@@ -520,6 +522,8 @@ var ActiveTigerInFamilyRestoran = {
 };
 
 var ActiveTigerInItalianClassicRestoran = {
+    id: 'ActiveTigerInItalianClassicRestoran',
+    type: 'filtering',
     params: {
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
@@ -569,6 +573,8 @@ var ActiveTigerInItalianClassicRestoran = {
 };
 
 var ActiveTigerInPub = {
+    id: 'ActiveTigerInPub',
+    type: 'filtering',
     params: {
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
@@ -615,6 +621,8 @@ var ActiveTigerInPub = {
 };
 
 var FamilyFunInFamilyRestoran = {
+    id: 'FamilyFunInFamilyRestoran',
+    type: 'filtering',
     params: {
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
@@ -648,6 +656,8 @@ var FamilyFunInFamilyRestoran = {
 };
 
 var FamilyFunInItalianClassicRestoran = {
+    id: 'FamilyFunInItalianClassicRestoran',
+    type: 'filtering',
     params: {
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
@@ -684,42 +694,8 @@ var FamilyFunInItalianClassicRestoran = {
 };
 
 var FamilyFunInPub = {
-    params: {
-        local: {
-            'ballooning-fest': ['sunday', 'beach', 'family'],
-            'hollydays': ['sunday', 'saturday'],
-        },
-        incoming: {
-            // FamilyFan
-            'user': [
-                'Няня',
-                'Любящие супруги',
-                'С детьми',
-                'Со второй половинкой',
-                'Любитель сытно поесть',
-                'Есть питомец',
-                'Люблю красивые фото',
-            ],
-            // Italian Classic Restoran
-            'place': [
-                'Italian Classic Restoran',
-                'Рестораны',
-                'Кондиционеры на терассе',
-                'Вкусный кофе',
-                'Живая музыка',
-                'Винная карта',
-                'Сомилье',
-                'Чайная карта',
-                'Спокойная атмосфера',
-                'Веганское меню',
-                'Алкогольная карта',
-            ],
-        },
-    },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
-};
-
-var FamilyFunInPub = {
+    id: 'FamilyFunInPub',
+    type: 'filtering',
     params: {
         local: {
             'ballooning-fest': ['sunday', 'beach', 'family'],
@@ -756,7 +732,7 @@ var ActiveTigerAsIncomingParam = JSON.parse(JSON.stringify(ActiveTigerInFamilyRe
 var FamilyFunAsIncomingParam = JSON.parse(JSON.stringify(FamilyFunInFamilyRestoran));
 
 var AggregationScheme = {
-    id: 'filter places in chain scheme',
+    id: 'AggregationScheme',
     type: 'shuffle-aggregation-filter',
     childs: [
         {
@@ -812,7 +788,8 @@ var AggregationScheme = {
 };
 
 var ActiveTigerAggregation = {
-    
+    id: 'ActiveTigerAggregation',
+    type: 'aggregation',
     params: {
         incoming: {
             chain: ActiveTigerAsIncomingParam
@@ -822,7 +799,8 @@ var ActiveTigerAggregation = {
 };
 
 var FamilyFunAggregation = {
-    
+    id: 'FamilyFunAggregation',
+    type: 'aggregation',
     params: {
         incoming: {
             chain: FamilyFunAsIncomingParam
@@ -832,6 +810,8 @@ var FamilyFunAggregation = {
 };
 
 var MainChain = {
+    id: 'MainChain',
+    type: 'filtering',
     params: {
         local: {
             'digits': [1, 2, 3],
@@ -941,6 +921,8 @@ var MainChain = {
 };
 
 var SecondChain = {
+    id: 'SecondChain',
+    type: 'filtering',
     scheme: {
         id: 'SecondChain',
         type: 'shuffle-row',
@@ -1065,20 +1047,16 @@ function generateChain(numChildren, maxDepth, isLastFilter = true) {
             }
             // Если тип элемента shuffle-row или shuffle-column, устанавливаем isLastFilter в false
             return {
-                scheme: {
-                    id: Math.random().toString(36).substr(2, 4),
-                    type: type,
-                    childs: childs.concat(generateRandomChild(depth + 1)), // Добавляем рекурсивно сгенерированные дочерние элементы
-                }
+                id: Math.random().toString(36).substr(2, 4),
+                type: type,
+                childs: childs.concat(generateRandomChild(depth + 1)), // Добавляем рекурсивно сгенерированные дочерние элементы
             };
         }
 
         return {
-            scheme: {
-                id: Math.random().toString(36).substr(2, 4),
-                type: type,
-                childs: [],
-            }
+            id: Math.random().toString(36).substr(2, 4),
+            type: type,
+            childs: [],
         };
     }
 
@@ -1088,7 +1066,9 @@ function generateChain(numChildren, maxDepth, isLastFilter = true) {
         chain.childs.push(generateRandomChild(1));
     }
 
-    return chain;
+    return {
+        scheme: chain,
+    };
 }
 
 // Export are variables to the window
