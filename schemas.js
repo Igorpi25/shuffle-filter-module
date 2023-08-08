@@ -473,6 +473,166 @@ var CommonScheme = {
     ],
 }
 
+var ArabScheme = {
+    id: 'ArabScheme',
+    type: 'shuffle-column',
+    childs: [
+        {
+            id: 'russian path',
+            type: 'shuffle-row',
+            childs: [
+                {
+                    id: 'Russian?',
+                    type: 'shuffle-filter-intersection',
+                    params: [
+                        {
+                            name: 'Alpha',
+                            type: 'set',
+                            source: 'inline',
+                            value: ['russian'],
+                        },
+                        {
+                            name: 'Beta',
+                            type: 'set',
+                            source: 'incoming',
+                            key: "user",
+                        }
+                    ]
+                },
+                CommonScheme,
+            ]
+        },
+        {
+            id: 'arab path',
+            type: 'shuffle-row',
+            childs: [
+                {
+                    id: 'Are you resident?',
+                    type: 'shuffle-filter-intersection',
+                    params: [
+                        {
+                            name: 'Alpha',
+                            type: 'set',
+                            source: 'inline',
+                            value: ['resident'],
+                        },
+                        {
+                            name: 'Beta',
+                            type: 'set',
+                            source: 'incoming',
+                            key: "user",
+                        }
+                    ]
+                },
+                {
+                    id: 'Arab flow',
+                    type: 'shuffle-filter',
+                    value: 'true',
+                },
+            ]
+        }
+    ],
+}
+
+var ArabInFamilyRestoran = {
+    id: 'ArabInFamilyRestoran',
+    type: 'filtering',
+    params: {
+        local: {
+            'ballooning-fest': ['sunday', 'beach', 'family'],
+            'hollydays': ['sunday', 'saturday'],
+        },
+        incoming: {
+            // ActiveTiger, Arab
+            'user': [
+                'ActiveTiger',
+                'arab',
+                'resident',
+                'Меломан',
+                'Любитель выпить',
+                'Люблю танцевать ',
+                'Слежу за знаменитостями',
+                'Человек - праздник',
+                'Люблю музыку',
+                'Фолк',
+                'Кантри','Блюз',
+                'Люблю экстрим',
+                'Люблю красивые фото',
+                'Азартный',
+                'Люблю активный отдых',
+                'Тусовщик',
+                'С друзьями',
+                'На приколе',
+                'Открыт к новым впечатлениям',
+                'Живу в ритме нон-стоп',
+                'Провожу время с пользой',
+                'Гедонист',
+            ],
+            // Family Restoran
+            'place': [
+                'Family Restoran',
+                'Рестораны',
+                'Винная карта',
+                'Чайная карта',
+                'Спокойная атмосфера',
+                'Веганское меню',
+                'Алкогольная карта',
+                'Детская комната',
+            ],
+        },
+    },
+    scheme: JSON.parse(JSON.stringify(ArabScheme)),
+};
+
+var RussianInFamilyRestoran = {
+    id: 'ArabInFamilyRestoran',
+    type: 'filtering',
+    params: {
+        local: {
+            'ballooning-fest': ['sunday', 'beach', 'family'],
+            'hollydays': ['sunday', 'saturday'],
+        },
+        incoming: {
+            // ActiveTiger, Russian
+            'user': [
+                'ActiveTiger',
+                'russian',
+                'Меломан',
+                'Любитель выпить',
+                'Люблю танцевать ',
+                'Слежу за знаменитостями',
+                'Человек - праздник',
+                'Люблю музыку',
+                'Фолк',
+                'Кантри','Блюз',
+                'Люблю экстрим',
+                'Люблю красивые фото',
+                'Азартный',
+                'Люблю активный отдых',
+                'Тусовщик',
+                'С друзьями',
+                'На приколе',
+                'Открыт к новым впечатлениям',
+                'Живу в ритме нон-стоп',
+                'Провожу время с пользой',
+                'Гедонист',
+            ],
+            // Family Restoran
+            'place': [
+                'Family Restoran',
+                'Рестораны',
+                'Винная карта',
+                'Чайная карта',
+                'Спокойная атмосфера',
+                'Веганское меню',
+                'Алкогольная карта',
+                'Детская комната',
+            ],
+        },
+    },
+    scheme: JSON.parse(JSON.stringify(ArabScheme)),
+};
+
 var ActiveTigerInFamilyRestoran = {
     id: 'ActiveTigerInFamilyRestoran',
     type: 'filtering',
@@ -1078,16 +1238,18 @@ function generateChain(numChildren, maxDepth, isLastFilter = true) {
 // Export are variables to the window
 if (typeof window !== 'undefined') {
     window.chains = [];
-    window.chains.push({ name: 'ActiveTigerAggregation', value: ActiveTigerAggregation });
+    window.chains.push({ name: 'MainChain', value: MainChain });
+    window.chains.push({ name: 'SecondChain', value: SecondChain });
     window.chains.push({ name: 'ActiveTigerInFamilyRestoran', value: ActiveTigerInFamilyRestoran });
     window.chains.push({ name: 'ActiveTigerInItalianClassicRestoran', value: ActiveTigerInItalianClassicRestoran });
     window.chains.push({ name: 'ActiveTigerInPub', value: ActiveTigerInPub });
+    window.chains.push({ name: 'ActiveTigerAggregation', value: ActiveTigerAggregation });
     window.chains.push({ name: 'FamilyFunInFamilyRestoran', value: FamilyFunInFamilyRestoran });
     window.chains.push({ name: 'FamilyFunInItalianClassicRestoran', value: FamilyFunInItalianClassicRestoran });
     window.chains.push({ name: 'FamilyFunInPub', value: FamilyFunInPub });
     window.chains.push({ name: 'FamilyFunAggregation', value: FamilyFunAggregation });
-    window.chains.push({ name: 'MainChain', value: MainChain });
-    window.chains.push({ name: 'SecondChain', value: SecondChain });
+    window.chains.push({ name: 'ArabInFamilyRestoran', value: ArabInFamilyRestoran });
+    window.chains.push({ name: 'RussianInFamilyRestoran', value: RussianInFamilyRestoran });
     window.chains.push({ name: '5 elements with depth 5 random', value: generateChain(5, 5) });
     window.chains.push({ name: '10 elements with depth 5 random', value: generateChain(10, 5) });
     window.chains.push({ name: '32 elements with depth 10 random', value: generateChain(32, 10) });
