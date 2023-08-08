@@ -45,6 +45,44 @@ function runColumn(scheme, local, incoming) {
     return false;
 }
 
+function runAggregationItem(scheme, local, incoming) {
+    return scheme;
+}
+
+// TODO hardcoded. target ignored
+function calculateItemInScheme(item, local, incoming) {
+    
+    let chain = incoming.chain;
+
+    chain.params.incoming.place = item.value;
+
+    return runNode(chain.scheme,chain.params.local,chain.params.incoming);
+}
+
+function runAggregationList(scheme, local, incoming) {
+    let result = []
+    for (let child of scheme.childs) {
+        if(child.type == 'shuffle-aggregation-item'){
+            result.push(child);
+        }
+    }
+    return result;
+}
+
+function runAggregationFilter(scheme, local, incoming) {
+    let result = []
+    for (let child of scheme.childs) {
+        if(child.type == 'shuffle-aggregation-item'){
+            if(calculateItemInScheme(child,local,incoming)){
+                result.push(child);
+            }
+        }else if(child.type == 'shuffle-aggregation-list'){
+            result.push(...runAggregationFilter(child,local, incoming))
+        }   
+    }
+    return result;
+}
+
 function runNode(node, local, incoming) {
     switch (node.type) {
         case 'shuffle-filter':
@@ -55,6 +93,12 @@ function runNode(node, local, incoming) {
             return runRow(node, local, incoming);
         case 'shuffle-column':
             return runColumn(node, local, incoming);
+        case 'shuffle-aggregation-item':
+            return runAggregationItem(node, local, incoming);
+        case 'shuffle-aggregation-list':
+            return runAggregationList(node, local, incoming);
+        case 'shuffle-aggregation-filter':
+            return runAggregationFilter(node, local, incoming);
         default:
             return false;
     }

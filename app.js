@@ -19,6 +19,9 @@ var app = new Vue({
         },
         selectedItemIsNotEmpty() {
             return Object.keys(this.selectedItem || {}).length
+        },
+        appSchemeResult() {
+            return runScheme(this.selectedScheme);
         }
     },
     methods: {

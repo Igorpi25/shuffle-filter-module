@@ -41,7 +41,7 @@
 </head>
 
 <body>
-    <div id="app" tabindex="-1" class="flex h-screen w-screen bg-black">
+    <div id="app" tabindex="-1" class="flex bg-white">
         <!-- Top panel -->
         <div v-if="varsOfSchemes && varsOfSchemes.length" class="fixed top-0 left-0 z-50 bg-white py-2 px-4">
             <span>Рабочая схема:</span>
@@ -60,7 +60,8 @@
                 <div v-if="selectedScheme.params?.incoming" class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
                     <div class="flex justify-start">Incoming params:</div>
                     <div v-for="(value, key) in selectedScheme.params?.incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
-                        {{key}}: {{value}}
+                        <span v-if="key=='chain'">{{key}}: {{value.scheme.id}}</span>
+                        <span v-else>{{key}}: {{value}}</span>
                     </div>
                 </div>
                 <!-- Local -->
@@ -87,14 +88,19 @@
             </div>
 
             <!-- Result -->
-            <div v-if="selectedScheme.scheme" class="flex items-center justify-center w-16 h-16 border">
+            <div v-if="(selectedScheme.scheme)&&((selectedScheme.scheme.type=='shuffle-row')||(selectedScheme.scheme.type=='shuffle-column')||(selectedScheme.scheme.type=='shuffle-filter')||((selectedScheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
                 <span class="text-gray-600">{{getSchemeResult()}}</span>
+            </div>  
+            <div v-if="(selectedScheme.scheme)&&((selectedScheme.scheme.type=='shuffle-aggregation-list')||(selectedScheme.scheme.type=='shuffle-aggregation-filter'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
+                <div v-for="child in appSchemeResult" class="text-gray-600 p-2  bg-stone-100">
+                    {{child.id}}
+                </div>
             </div>  
              
         </div>
 
         <!-- Side Menu -->
-        <div class="flex-grow w-20 bg-gray-100">
+        <div class="flex-grow bg-gray-100  w-40 h-screen">
             <div v-if="selectedItemIsNotEmpty" class="flex flex-col border-1 border">
                 <node-panel :local="selectedScheme?.params?.local"  :incoming="selectedScheme?.params?.incoming" :schema="selectedScheme.scheme" :selected-item="selectedItem" />
             </div>
@@ -112,6 +118,9 @@
     <script src="components/shuffle-column.js"></script>
     <script src="components/shuffle-row.js"></script>
     <script src="components/shuffle-filter-intersection.js"></script>
+    <script src="components/shuffle-aggregation-item.js"></script>
+    <script src="components/shuffle-aggregation-filter.js"></script>
+    <script src="components/shuffle-aggregation-list.js"></script>
     <script src="components/shuffle-chain.js"></script>
     <script src="libs/schemeSearch.js"></script>
     <script src="libs/schemeRunner.js"></script>
