@@ -42,72 +42,63 @@
 
 <body>
     <div id="app" tabindex="-1" class="flex bg-white">
-        <!-- Top panel -->
-        <div v-if="varsOfSchemes && varsOfSchemes.length" class="fixed top-0 left-0 z-50 bg-white py-2 px-4">
-            <span>Рабочая схема:</span>
-            <select v-model="selectedScheme" @change="onChangeSelectedScheme">
-                <template v-for="item in varsOfSchemes">
-                    <option :value="item.value" selected="selectedScheme.name == item.name">{{ item.name }}</option>
-                </template>
-            </select>
-        </div>
 
         <!-- White board -->
-        <div v-if="selectedScheme" class="flex flex-grow bg-white py-16 px-2 space-x-2 overflow-scroll">
+        <div class="flex flex-grow bg-white py-16 px-2 space-x-2 overflow-scroll">
             <!-- Params -->
-            <div v-if="selectedScheme.params" class="flex flex-col space-y-2 border p-4">
+            <div class="flex flex-col space-y-2 border p-4">
                 <!-- Incoming -->
-                <div v-if="selectedScheme.params?.incoming" class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
+                <div v-if="scheme.params?.incoming" class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
                     <div class="flex justify-start">Incoming params:</div>
-                    <div v-if="selectedScheme.type=='aggregation'" class="flex flex-col space-y-4 p-2">
+                    <div v-if="scheme.type=='aggregation'" class="flex flex-col space-y-4 p-2">
                         <div class="flex flex-col space-y-2">
                             <div>chain:</div> 
                             <div class="text-xs text-gray-400 p-2 bg-gray-100">
-                                {{selectedScheme.id}}
+                                {{scheme.id}}
                             </div>
                             <div>user:</div>
                             <div class="text-xs text-gray-400 p-2 bg-gray-100">
-                                {{selectedScheme.params.incoming.chain.params.incoming.user}}
+                                {{scheme.params.incoming.chain.params.incoming.user}}
                             </div>
                             <div>places:</div>
-                            <div v-for="item in selectedScheme.params.incoming.items" class="p-2 bg-gray-100">
+                            <div v-for="item in scheme.params.incoming.items" class="p-2 bg-gray-100">
                                 <div>{{item.id}}</div>
                                 <div class="text-xs text-gray-400">{{item.value}}</div>
                             </div>
                         </div>
                     </div>
-                    <div v-else v-for="(value, key) in selectedScheme.params?.incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
+                    <div v-else v-for="(value, key) in scheme.params?.incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
                         <span>{{key}}: {{value}}</span>
                     </div>
                 </div>
                 <!-- Local -->
-                <div v-if="selectedScheme.params?.local" class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
+                <div v-if="scheme.params?.local" class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
                     <div class="flex justify-start">Local params:</div>
-                    <div v-for="(value, key) in selectedScheme.params?.local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
+                    <div v-for="(value, key) in scheme.params?.local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
                         {{key}}: {{value}}
                     </div>
                 </div>
             </div>
 
-            <div v-if="selectedScheme.scheme" class="flex-none text-gray-400">
+            <div v-if="scheme.scheme" class="flex-none text-gray-400">
                 ->
             </div>
         
             <!-- Scheme -->
-            <div v-if="selectedScheme.scheme" class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
+            <div v-if="scheme.scheme" class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
                 <div class="flex justify-start">Scheme</div>
-                <shuffle-chain :schema="selectedScheme.scheme" @on-select-item="onSelectItem" />
+                <shuffle-chain :schema="scheme.scheme" @on-select-item="onSelectItem" />
             </div>
 
-            <div v-if="selectedScheme.scheme" class="flex-none text-gray-400">
+            <div v-if="scheme.scheme" class="flex-none text-gray-400">
                 ->
             </div>
 
             <!-- Result -->
-            <div v-if="(selectedScheme.scheme)&&((selectedScheme.scheme.type=='shuffle-row')||(selectedScheme.scheme.type=='shuffle-column')||(selectedScheme.scheme.type=='shuffle-filter')||((selectedScheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
-                <span class="text-gray-600">{{getSchemeResult()}}</span>
+            <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-row')||(scheme.scheme.type=='shuffle-column')||(scheme.scheme.type=='shuffle-filter')||((scheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
+                <span class="text-gray-600">Result</span>
             </div>  
-            <div v-if="(selectedScheme.scheme)&&((selectedScheme.scheme.type=='shuffle-aggregation-list')||(selectedScheme.scheme.type=='shuffle-aggregation-filter'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
+            <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-aggregation-list')||(scheme.scheme.type=='shuffle-aggregation-filter'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
                 <div v-for="child in appSchemeResult" class="text-gray-600 p-2  bg-stone-100">
                     {{child.id}}
                 </div>
@@ -118,7 +109,7 @@
         <!-- Side Menu -->
         <div class="flex-grow bg-gray-100  w-40 h-screen">
             <div v-if="selectedItemIsNotEmpty" class="flex flex-col border-1 border">
-                <node-panel :local="selectedScheme?.params?.local"  :incoming="selectedScheme?.params?.incoming" :schema="selectedScheme.scheme" :selected-item="selectedItem" />
+                <node-panel :local="scheme?.params?.local"  :incoming="scheme?.params?.incoming" :schema="scheme.scheme" :selected-item="selectedItem" />
             </div>
         </div>
     </div>
