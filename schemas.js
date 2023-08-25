@@ -1,3 +1,190 @@
+
+var MainChain = {
+    id: 'MainChain',
+    type: 'filtering',
+    params: {
+        local: {
+            'digits': [1, 2, 3],
+        },
+        incoming: {
+            'mixed': [
+                'string1',
+                2,
+            ],
+            'strings': [
+                'string1',
+                'string2',
+            ],
+        },
+    },
+    scheme: {
+        id: 'Main',
+        type: 'shuffle-row',
+        childs: [
+            {
+                id: 'D',
+                type: 'shuffle-column',
+                childs: [
+                    {
+                        id: 'A',
+                        type: 'shuffle-row',
+                        childs: [
+                            {
+                                id: 'A1',
+                                type: 'shuffle-filter-intersection',
+                                params: [
+                                    {
+                                        name: 'Alpha',
+                                        type: 'set',
+                                        source: 'inline',
+                                        value: ['cafe', 'kids', 'beach'],
+                                    },
+                                    {
+                                        name: 'Digits',
+                                        type: 'set',
+                                        source: 'local',
+                                        key: "digits",
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'A2',
+                                type: 'shuffle-filter-intersection',
+                                params: [
+                                    {
+                                        name: 'Mixed',
+                                        type: 'set',
+                                        source: 'incoming',
+                                        key: 'mixed',
+                                    },
+                                    {
+                                        name: 'Strings',
+                                        type: 'set',
+                                        source: 'incoming',
+                                        key: 'strings',
+                                    }
+                                ]
+                            },
+                        ],
+                    },
+                    {
+                        id: 'B',
+                        type: 'shuffle-column',
+                        childs: [
+                            {
+                                id: 'B1',
+                                type: 'shuffle-filter',
+                                result: true,
+                            },
+                            {
+                                id: 'B2',
+                                type: 'shuffle-filter',
+                                result: false,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: 'C1',
+                type: 'shuffle-filter',
+                result: true,
+            },
+            {
+                id: 'Z',
+                type: 'shuffle-column',
+                childs: [
+                    {
+                        id: 'Z1',
+                        type: 'shuffle-filter',
+                        result: false,
+                    },
+                    {
+                        id: 'Z2',
+                        type: 'shuffle-filter',
+                        result: true,
+                    },
+                ],
+            },
+        ],
+    }
+};
+
+var SecondChain = {
+    id: 'SecondChain',
+    type: 'filtering',
+    scheme: {
+        id: 'SecondChain',
+        type: 'shuffle-row',
+        childs: [
+            {
+                id: 'K',
+                type: 'shuffle-column',
+                childs: [
+                    {
+                        id: 'M',
+                        type: 'shuffle-row',
+                        childs: [
+                            {
+                                id: 'M1',
+                                type: 'shuffle-filter',
+                                result: false,
+                            },
+                        ],
+                    },
+                    {
+                        id: 'X',
+                        type: 'shuffle-column',
+                        childs: [
+                            {
+                                id: 'X1',
+                                type: 'shuffle-filter',
+                                result: false,
+                            },
+                            {
+                                id: 'X2',
+                                type: 'shuffle-filter',
+                                result: true,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: 'G1',
+                type: 'shuffle-filter',
+                result: true,
+            },
+            {
+                id: 'G2',
+                type: 'shuffle-filter',
+                result: true,
+            },
+            {
+                id: 'F',
+                type: 'shuffle-column',
+                childs: [
+                    {
+                        id: 'F1',
+                        type: 'shuffle-filter',
+                        result: false,
+                    },
+                    {
+                        id: 'F2',
+                        type: 'shuffle-filter',
+                        result: true,
+                    },
+                    {
+                        id: 'F3',
+                        type: 'shuffle-filter',
+                        result: true,
+                    },
+                ],
+            },
+        ],
+    }
+};
+
 var CommonScheme = {
     id: 'CommonScheme',
     type: 'shuffle-column',
@@ -473,166 +660,6 @@ var CommonScheme = {
     ],
 }
 
-var ArabScheme = {
-    id: 'ArabScheme',
-    type: 'shuffle-column',
-    childs: [
-        {
-            id: 'russian path',
-            type: 'shuffle-row',
-            childs: [
-                {
-                    id: 'Russian?',
-                    type: 'shuffle-filter-intersection',
-                    params: [
-                        {
-                            name: 'Alpha',
-                            type: 'set',
-                            source: 'inline',
-                            value: ['russian'],
-                        },
-                        {
-                            name: 'Beta',
-                            type: 'set',
-                            source: 'incoming',
-                            key: "user",
-                        }
-                    ]
-                },
-                CommonScheme,
-            ]
-        },
-        {
-            id: 'arab path',
-            type: 'shuffle-row',
-            childs: [
-                {
-                    id: 'Are you resident?',
-                    type: 'shuffle-filter-intersection',
-                    params: [
-                        {
-                            name: 'Alpha',
-                            type: 'set',
-                            source: 'inline',
-                            value: ['resident'],
-                        },
-                        {
-                            name: 'Beta',
-                            type: 'set',
-                            source: 'incoming',
-                            key: "user",
-                        }
-                    ]
-                },
-                {
-                    id: 'Arab flow',
-                    type: 'shuffle-filter',
-                    value: 'true',
-                },
-            ]
-        }
-    ],
-}
-
-var ArabInFamilyRestoran = {
-    id: 'ArabInFamilyRestoran',
-    type: 'filtering',
-    params: {
-        local: {
-            'ballooning-fest': ['sunday', 'beach', 'family'],
-            'hollydays': ['sunday', 'saturday'],
-        },
-        incoming: {
-            // ActiveTiger, Arab
-            'user': [
-                'ActiveTiger',
-                'arab',
-                'resident',
-                'Меломан',
-                'Любитель выпить',
-                'Люблю танцевать ',
-                'Слежу за знаменитостями',
-                'Человек - праздник',
-                'Люблю музыку',
-                'Фолк',
-                'Кантри','Блюз',
-                'Люблю экстрим',
-                'Люблю красивые фото',
-                'Азартный',
-                'Люблю активный отдых',
-                'Тусовщик',
-                'С друзьями',
-                'На приколе',
-                'Открыт к новым впечатлениям',
-                'Живу в ритме нон-стоп',
-                'Провожу время с пользой',
-                'Гедонист',
-            ],
-            // Family Restoran
-            'place': [
-                'Family Restoran',
-                'Рестораны',
-                'Винная карта',
-                'Чайная карта',
-                'Спокойная атмосфера',
-                'Веганское меню',
-                'Алкогольная карта',
-                'Детская комната',
-            ],
-        },
-    },
-    scheme: JSON.parse(JSON.stringify(ArabScheme)),
-};
-
-var RussianInFamilyRestoran = {
-    id: 'ArabInFamilyRestoran',
-    type: 'filtering',
-    params: {
-        local: {
-            'ballooning-fest': ['sunday', 'beach', 'family'],
-            'hollydays': ['sunday', 'saturday'],
-        },
-        incoming: {
-            // ActiveTiger, Russian
-            'user': [
-                'ActiveTiger',
-                'russian',
-                'Меломан',
-                'Любитель выпить',
-                'Люблю танцевать ',
-                'Слежу за знаменитостями',
-                'Человек - праздник',
-                'Люблю музыку',
-                'Фолк',
-                'Кантри','Блюз',
-                'Люблю экстрим',
-                'Люблю красивые фото',
-                'Азартный',
-                'Люблю активный отдых',
-                'Тусовщик',
-                'С друзьями',
-                'На приколе',
-                'Открыт к новым впечатлениям',
-                'Живу в ритме нон-стоп',
-                'Провожу время с пользой',
-                'Гедонист',
-            ],
-            // Family Restoran
-            'place': [
-                'Family Restoran',
-                'Рестораны',
-                'Винная карта',
-                'Чайная карта',
-                'Спокойная атмосфера',
-                'Веганское меню',
-                'Алкогольная карта',
-                'Детская комната',
-            ],
-        },
-    },
-    scheme: JSON.parse(JSON.stringify(ArabScheme)),
-};
-
 var ActiveTigerInFamilyRestoran = {
     id: 'ActiveTigerInFamilyRestoran',
     type: 'filtering',
@@ -937,228 +964,6 @@ var Places = [
     }
 ];
 
-var AggregationScheme = {
-    id: 'AggregationScheme',
-    type: 'shuffle-aggregation-filter',
-    childs: [
-        {
-            id: 'places-list',
-            type: 'shuffle-aggregation-list',
-            childs: Places,
-        },
-    ]
-};
-
-var ActiveTigerAggregation = {
-    id: 'ActiveTigerAggregation',
-    type: 'aggregation',
-    params: {
-        incoming: {
-            chain: ActiveTigerAsIncomingParam,
-            items: Places,
-        }
-    } ,
-    scheme: JSON.parse(JSON.stringify(AggregationScheme)),
-};
-
-var FamilyFunAggregation = {
-    id: 'FamilyFunAggregation',
-    type: 'aggregation',
-    params: {
-        incoming: {
-            chain: FamilyFunAsIncomingParam,
-            items: Places,
-        }
-    } ,
-    scheme: JSON.parse(JSON.stringify(AggregationScheme)),
-};
-
-var MainChain = {
-    id: 'MainChain',
-    type: 'filtering',
-    params: {
-        local: {
-            'digits': [1, 2, 3],
-        },
-        incoming: {
-            'mixed': [
-                'string1',
-                1,
-            ],
-            'strings': [
-                'string1',
-                'string2',
-            ],
-        },
-    },
-    scheme: {
-        id: 'Main',
-        type: 'shuffle-row',
-        childs: [
-            {
-                id: 'D',
-                type: 'shuffle-column',
-                childs: [
-                    {
-                        id: 'A',
-                        type: 'shuffle-row',
-                        childs: [
-                            {
-                                id: 'A1',
-                                type: 'shuffle-filter-intersection',
-                                params: [
-                                    {
-                                        name: 'Alpha',
-                                        type: 'set',
-                                        source: 'inline',
-                                        value: ['cafe', 'kids', 'beach'],
-                                    },
-                                    {
-                                        name: 'Digits',
-                                        type: 'set',
-                                        source: 'local',
-                                        key: "digits",
-                                    }
-                                ]
-                            },
-                            {
-                                id: 'A2',
-                                type: 'shuffle-filter-intersection',
-                                params: [
-                                    {
-                                        name: 'Mixed',
-                                        type: 'set',
-                                        source: 'incoming',
-                                        key: 'mixed',
-                                    },
-                                    {
-                                        name: 'Strings',
-                                        type: 'set',
-                                        source: 'incoming',
-                                        key: 'strings',
-                                    }
-                                ]
-                            },
-                        ],
-                    },
-                    {
-                        id: 'B',
-                        type: 'shuffle-column',
-                        childs: [
-                            {
-                                id: 'B1',
-                                type: 'shuffle-filter',
-                                result: true,
-                            },
-                            {
-                                id: 'B2',
-                                type: 'shuffle-filter',
-                                result: false,
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 'C1',
-                type: 'shuffle-filter',
-                result: true,
-            },
-            {
-                id: 'Z',
-                type: 'shuffle-column',
-                childs: [
-                    {
-                        id: 'Z1',
-                        type: 'shuffle-filter',
-                        result: false,
-                    },
-                    {
-                        id: 'Z2',
-                        type: 'shuffle-filter',
-                        result: true,
-                    },
-                ],
-            },
-        ],
-    }
-};
-
-var SecondChain = {
-    id: 'SecondChain',
-    type: 'filtering',
-    scheme: {
-        id: 'SecondChain',
-        type: 'shuffle-row',
-        childs: [
-            {
-                id: 'K',
-                type: 'shuffle-column',
-                childs: [
-                    {
-                        id: 'M',
-                        type: 'shuffle-row',
-                        childs: [
-                            {
-                                id: 'M1',
-                                type: 'shuffle-filter',
-                                result: false,
-                            },
-                        ],
-                    },
-                    {
-                        id: 'X',
-                        type: 'shuffle-column',
-                        childs: [
-                            {
-                                id: 'X1',
-                                type: 'shuffle-filter',
-                                result: false,
-                            },
-                            {
-                                id: 'X2',
-                                type: 'shuffle-filter',
-                                result: true,
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 'G1',
-                type: 'shuffle-filter',
-                result: true,
-            },
-            {
-                id: 'G2',
-                type: 'shuffle-filter',
-                result: true,
-            },
-            {
-                id: 'F',
-                type: 'shuffle-column',
-                childs: [
-                    {
-                        id: 'F1',
-                        type: 'shuffle-filter',
-                        result: false,
-                    },
-                    {
-                        id: 'F2',
-                        type: 'shuffle-filter',
-                        result: true,
-                    },
-                    {
-                        id: 'F3',
-                        type: 'shuffle-filter',
-                        result: true,
-                    },
-                ],
-            },
-        ],
-    }
-};
-
 function generateChain(numChildren, maxDepth, isLastFilter = true) {
     var chain = {
         id: 'Chain',
@@ -1238,25 +1043,22 @@ function generateChain(numChildren, maxDepth, isLastFilter = true) {
 // Export are variables to the window
 if (typeof window !== 'undefined') {
     window.chains = [];
+    window.chains.push({ name: 'ActiveTigerInFamilyRestoran', value: ActiveTigerInFamilyRestoran });
+
     window.chains.push({ name: 'MainChain', value: MainChain });
     window.chains.push({ name: 'SecondChain', value: SecondChain });
-    window.chains.push({ name: 'ActiveTigerInFamilyRestoran', value: ActiveTigerInFamilyRestoran });
+    
+    
     window.chains.push({ name: 'ActiveTigerInItalianClassicRestoran', value: ActiveTigerInItalianClassicRestoran });
     window.chains.push({ name: 'ActiveTigerInPub', value: ActiveTigerInPub });
-    window.chains.push({ name: 'ActiveTigerAggregation', value: ActiveTigerAggregation });
+    
     window.chains.push({ name: 'FamilyFunInFamilyRestoran', value: FamilyFunInFamilyRestoran });
     window.chains.push({ name: 'FamilyFunInItalianClassicRestoran', value: FamilyFunInItalianClassicRestoran });
     window.chains.push({ name: 'FamilyFunInPub', value: FamilyFunInPub });
-    window.chains.push({ name: 'FamilyFunAggregation', value: FamilyFunAggregation });
-    window.chains.push({ name: 'ArabInFamilyRestoran', value: ArabInFamilyRestoran });
-    window.chains.push({ name: 'RussianInFamilyRestoran', value: RussianInFamilyRestoran });
+    
     window.chains.push({ name: '5 elements with depth 5 random', value: generateChain(5, 5) });
     window.chains.push({ name: '10 elements with depth 5 random', value: generateChain(10, 5) });
     window.chains.push({ name: '32 elements with depth 10 random', value: generateChain(32, 10) });
     window.chains.push({ name: '64 elements with depth 12 random', value: generateChain(64, 12) });
     window.chains.push({ name: '128 elements with depth 28 random', value: generateChain(128, 28) });
-
-    // Export other schemas as needed
-    // window.Schema2 = Schema2;
-    // window.Schema3 = Schema3;
 }
