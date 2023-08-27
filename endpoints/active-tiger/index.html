@@ -13,47 +13,53 @@
         <h1>
             Тестовый endoint <span class="font-bold">active-tiger</span>
         </h1>
-
-        <div class="flex p-2">
-            id: {{scheme.id}}
-        </div>
-
-        <!-- Params -->
-        <div class="flex flex-col p-2">
-            params:
-
-            <!-- Incoming -->
-            <div v-if="scheme.params.incoming" class="flex flex-col p-2">
-                incoming:
-                <div v-for="(value, key) in scheme.params.incoming" class="p-2">
-                    {{key}}: {{value}}
-                </div>
-            </div>
-
-            <!-- Outgoing -->
-            <div v-if="scheme.params.outgoing" class="flex flex-col p-2">
-                outgoing:
-                <div v-for="(value, key) in scheme.params.outgoing" class="p-2">
-                    {{key}}: {{value}}
-                </div>
-            </div>
-
-            <!-- Local -->
-            <div v-if="scheme.params.local" class="flex flex-col p-2">
-                local:
-                <div v-for="(value, key) in scheme.params.local" class="p-2">
-                    {{key}}: {{value}}
-                </div>
-            </div>
-        </div>
-
+        
         <!-- Scheme -->
         <div class="flex flex-col p-2">
-            scheme:
+            <!-- Id -->
+            <div class="flex p-2">
+                id: {{scheme.id}}
+            </div>
+    
+            <!-- Head -->
             <div class="flex flex-col p-2">
-                result: {{getSchemeResult()}}
+                head:
+    
+                <!-- Incoming -->
+                <div v-if="scheme.params.incoming" class="flex flex-col p-2">
+                    incoming:
+                    <div v-for="(value, key) in scheme.params.incoming" class="p-2">
+                        {{key}}: {{value}}
+                    </div>
+                </div>
+    
+                <!-- Outgoing -->
+                <div v-if="scheme.params.outgoing" class="flex flex-col p-2">
+                    outgoing:
+                    <div v-for="(value, key) in scheme.params.outgoing" class="p-2">
+                        {{key}}: {{value}}
+                    </div>
+                </div>
+    
+                <!-- Local -->
+                <div v-if="scheme.params.local" class="flex flex-col p-2">
+                    local:
+                    <div v-for="(value, key) in scheme.params.local" class="p-2">
+                        {{key}}: {{value}}
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Body -->
+            <div class="flex flex-col p-2">
+                body:
+                <div class="flex flex-col p-2">
+                    result: {{getSchemeResult()}}
+                </div>
             </div>
         </div>
+
+        
         
     </div>
     <script src="../../schemas.js"></script>
