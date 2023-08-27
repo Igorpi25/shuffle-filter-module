@@ -5,16 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.0/dist/vue-router.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
     <div id="page" tabindex="-1" class="flex flex-col p-2">
-        <h1>
+        <div>
             Тестовый endoint <span class="font-bold">active-tiger</span>
-        </h1>
+        </div>
+
+        <!-- Get Url Params -->
+        GetUrlParams
+        <div class="flex flex-col p-2">
+
+            <!-- params -->
+            <div v-if="getUrlParams()" class="flex flex-col p-2">
+                params:
+                <div v-for="(value, key) in getUrlParams()" class="p-2">
+                    {{key}}: {{value}}
+                </div>
+            </div>
+    
+        </div>
         
         <!-- Scheme -->
+        Scheme
         <div class="flex flex-col p-2">
             <!-- Id -->
             <div class="flex p-2">

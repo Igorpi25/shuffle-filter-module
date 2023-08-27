@@ -1,4 +1,5 @@
 var page = new Vue({
+    router: new VueRouter(),
     el: '#page',
     data:
     {
@@ -6,6 +7,9 @@ var page = new Vue({
 
     },
     methods: {
+        getUrlParams() {
+            return this.$route.query;
+        },
         getSchemeResult() {
             return runScheme(this.scheme);
         }
