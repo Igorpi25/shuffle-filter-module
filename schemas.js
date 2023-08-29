@@ -4,17 +4,11 @@ var MainChain = {
     type: 'filtering',
     params: {
         local: {
-            'digits': [1, 2, 3],
+            'active-seal': ['coffee', 'guitar', 'swimming'],
         },
         incoming: {
-            'mixed': [
-                'string1',
-                2,
-            ],
-            'strings': [
-                'string1',
-                'string2',
-            ],
+            'place': ['starbucks', 'beach', 'cafe'],
+            'user': ['coffee', 'guitar', 'swimming', 'calisthenics', 'drink', 'beer'],
         },
     },
     scheme: {
@@ -34,16 +28,16 @@ var MainChain = {
                                 type: 'shuffle-filter-intersection',
                                 params: [
                                     {
-                                        name: 'Alpha',
+                                        name: 'Required',
                                         type: 'set',
                                         source: 'inline',
                                         value: ['cafe', 'kids', 'beach'],
                                     },
                                     {
-                                        name: 'Digits',
+                                        name: 'Incoming',
                                         type: 'set',
-                                        source: 'local',
-                                        key: "digits",
+                                        source: 'incoming',
+                                        key: "place",
                                     }
                                 ]
                             },
@@ -52,16 +46,16 @@ var MainChain = {
                                 type: 'shuffle-filter-intersection',
                                 params: [
                                     {
-                                        name: 'Mixed',
+                                        name: 'Required',
                                         type: 'set',
-                                        source: 'incoming',
-                                        key: 'mixed',
+                                        source: 'local',
+                                        key: 'active-seal',
                                     },
                                     {
-                                        name: 'Strings',
+                                        name: 'Incoming',
                                         type: 'set',
                                         source: 'incoming',
-                                        key: 'strings',
+                                        key: 'user',
                                     }
                                 ]
                             },
@@ -74,7 +68,7 @@ var MainChain = {
                             {
                                 id: 'B1',
                                 type: 'shuffle-filter',
-                                result: true,
+                                result: false,
                             },
                             {
                                 id: 'B2',

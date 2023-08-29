@@ -4,7 +4,7 @@ var app = new Vue({
     {
         runSchemeResult: '(runSchemeResult)',
         message: '(nothing selected)',
-        scheme: chains[0].value,
+        scheme: chains[1].value,
         selectedItem: {},
     },
     computed: {
