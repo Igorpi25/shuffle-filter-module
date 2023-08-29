@@ -10,77 +10,16 @@
 </head>
 
 <body>
-    <div id="page" tabindex="-1" class="flex flex-col p-2">
-        <div>
-            Тестовый endoint <span class="font-bold">active-tiger</span>
-        </div>
-
-        <!-- Get Url Params -->
-        GetUrlParams
-        <div class="flex flex-col p-2">
-
-            <!-- params -->
-            <div v-if="getUrlParams()" class="flex flex-col p-2">
-                params:
-                <div v-for="(value, key) in getUrlParams()" class="p-2">
-                    {{key}}: {{value}}
-                </div>
-            </div>
-    
-        </div>
-        
-        <!-- Scheme -->
-        Scheme
-        <div class="flex flex-col p-2">
-            <!-- Id -->
-            <div class="flex p-2">
-                id: {{scheme.id}}
-            </div>
-    
-            <!-- Head -->
-            <div class="flex flex-col p-2">
-                head:
-    
-                <!-- Incoming -->
-                <div v-if="scheme.params.incoming" class="flex flex-col p-2">
-                    incoming:
-                    <div v-for="(value, key) in scheme.params.incoming" class="p-2">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-    
-                <!-- Outgoing -->
-                <div v-if="scheme.params.outgoing" class="flex flex-col p-2">
-                    outgoing:
-                    <div v-for="(value, key) in scheme.params.outgoing" class="p-2">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-    
-                <!-- Local -->
-                <div v-if="scheme.params.local" class="flex flex-col p-2">
-                    local:
-                    <div v-for="(value, key) in scheme.params.local" class="p-2">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Body -->
-            <div class="flex flex-col p-2">
-                body:
-                <div class="flex flex-col p-2">
-                    result: {{getSchemeResult()}}
-                </div>
-            </div>
-        </div>
-
-        
-        
+    <div id="page" class="flex flex-col p-2">
+        <endpoint :scheme="getSchemeByIndex(2)">
+        </endpoint>
     </div>
     <script src="../../schemas.js"></script>
     <script src="../../libs/schemeRunner.js"></script>
-    <script src="page.js"></script>
+    <script src="../../components/endpoint.js"></script>
+    <script src="../../components/endpoint-params.js"></script>
+    <script src="../../components/endpoint-scheme.js"></script>
+    <script src="../page.js"></script>
 </body>
 
 </html>

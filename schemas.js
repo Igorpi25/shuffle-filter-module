@@ -1037,12 +1037,11 @@ function generateChain(numChildren, maxDepth, isLastFilter = true) {
 // Export are variables to the window
 if (typeof window !== 'undefined') {
     window.chains = [];
-    window.chains.push({ name: 'ActiveTigerInFamilyRestoran', value: ActiveTigerInFamilyRestoran });
+    
 
     window.chains.push({ name: 'MainChain', value: MainChain });
-    window.chains.push({ name: 'SecondChain', value: SecondChain });
-    
-    
+
+    window.chains.push({ name: 'ActiveTigerInFamilyRestoran', value: ActiveTigerInFamilyRestoran });
     window.chains.push({ name: 'ActiveTigerInItalianClassicRestoran', value: ActiveTigerInItalianClassicRestoran });
     window.chains.push({ name: 'ActiveTigerInPub', value: ActiveTigerInPub });
     
