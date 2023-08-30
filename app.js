@@ -1,10 +1,11 @@
 var app = new Vue({
     el: '#app',
+    router: new VueRouter(),
     data:
     {
         runSchemeResult: '(runSchemeResult)',
         message: '(nothing selected)',
-        scheme: chains[2].value,
+        scheme: {},
         selectedItem: {},
     },
     computed: {
@@ -16,5 +17,11 @@ var app = new Vue({
         onSelectItem(item) {
             this.selectedItem = item;
         },
+        getUrlParams() {
+            return this.$route.query;
+        },
     },
+    mounted() {
+        this.scheme = chains[this.getUrlParams().index].value;
+    }
 });

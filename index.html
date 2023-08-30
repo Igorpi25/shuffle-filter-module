@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.0/dist/vue-router.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .app-container {
@@ -96,7 +97,7 @@
 
             <!-- Result -->
             <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-row')||(scheme.scheme.type=='shuffle-column')||(scheme.scheme.type=='shuffle-filter')||((scheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
-                <span class="text-gray-600">Result</span>
+                <span class="text-gray-600">{{getUrlParams().index}}</span>
             </div>  
             <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-aggregation-list')||(scheme.scheme.type=='shuffle-aggregation-filter'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
                 <div v-for="child in appSchemeResult" class="text-gray-600 p-2  bg-stone-100">
