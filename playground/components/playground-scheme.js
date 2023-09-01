@@ -1,4 +1,4 @@
-Vue.component('endpoint-scheme', {
+Vue.component('playground-scheme', {
     methods: {
         getResult() {
             return runScheme(this.scheme);
@@ -22,12 +22,12 @@ Vue.component('endpoint-scheme', {
             head:
 
             <!-- Incoming -->
-            <div v-if="scheme.params.incoming" class="flex flex-col p-2">
+            <div v-if="scheme.params.incoming " class="flex flex-col p-2">
                 incoming:
                 <div v-for="(value, key) in scheme.params.incoming" class="p-2">
                     {{key}}: {{value}}
                 </div>
-            </div>
+            </div> 
 
             <!-- Outgoing -->
             <div v-if="scheme.params.outgoing" class="flex flex-col p-2">
@@ -35,7 +35,7 @@ Vue.component('endpoint-scheme', {
                 <div v-for="(value, key) in scheme.params.outgoing" class="p-2">
                     {{key}}: {{value}}
                 </div>
-            </div>
+            </div> 
 
             <!-- Local -->
             <div v-if="scheme.params.local" class="flex flex-col p-2">

@@ -10,16 +10,22 @@
 </head>
 
 <body>
-    <div id="page" class="flex flex-col p-2">
-        <endpoint :scheme="getSchemeByIndex(2)">
-        </endpoint>
+    <div id="app" class="flex flex-col p-2">
+        
+        <!-- Scheme -->
+        <playground-scheme :scheme="scheme"></playground-scheme>
+
+        Url Params
+        <playground-params :params="getUrlParams()"></playground-params>
+
+        Injected Scheme
+        <playground-scheme :scheme="getInjectedScheme()"></playground-scheme>
     </div>
     <script src="../../../schemas.js"></script>
     <script src="../../../core/schemeRunner.js"></script>
-    <script src="../../components/endpoint.js"></script>
-    <script src="../../components/endpoint-params.js"></script>
-    <script src="../../components/endpoint-scheme.js"></script>
-    <script src="../../app.js"></script>
+    <script src="components/playground-params.js"></script>
+    <script src="components/playground-scheme.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>

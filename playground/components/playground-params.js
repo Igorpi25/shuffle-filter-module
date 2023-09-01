@@ -1,4 +1,4 @@
-Vue.component('endpoint-params', {
+Vue.component('playground-params', {
     methods: {
     },
     props: {
