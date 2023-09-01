@@ -3,7 +3,6 @@ var app = new Vue({
     router: new VueRouter(),
     data:
     {
-        runSchemeResult: '(runSchemeResult)',
         message: '(nothing selected)',
         scheme: {},
         selectedItem: {},
@@ -11,6 +10,9 @@ var app = new Vue({
     computed: {
         selectedItemIsNotEmpty() {
             return Object.keys(this.selectedItem || {}).length
+        },
+        runSchemeResult() {
+            return runScheme(this.scheme);
         },
     },
     methods: {

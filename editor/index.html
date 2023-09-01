@@ -104,10 +104,10 @@
 
             <!-- Result -->
             <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-row')||(scheme.scheme.type=='shuffle-column')||(scheme.scheme.type=='shuffle-filter')||((scheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
-                <span class="text-gray-400">Result</span>
+                <span class="text-gray-400">{{runSchemeResult}}</span>
             </div>  
             <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-aggregation-list')||(scheme.scheme.type=='shuffle-aggregation-filter'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
-                <div v-for="child in appSchemeResult" class="text-gray-600 p-2  bg-stone-100">
+                <div v-for="child in runSchemeResult" class="text-gray-600 p-2  bg-stone-100">
                     {{child.id}}
                 </div>
             </div>  
