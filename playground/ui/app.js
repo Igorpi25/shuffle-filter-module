@@ -19,6 +19,9 @@ var index = new Vue({
         }
     },
     beforeMount() {
+        if(this.$route.query.index === undefined) {
+            this.$route.query.index = 0;
+        }
         this.scheme = chains[this.getUrlParams().index].value;
     }
 });
