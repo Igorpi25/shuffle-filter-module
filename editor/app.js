@@ -21,7 +21,7 @@ var app = new Vue({
             return this.$route.query;
         },
     },
-    mounted() {
+    beforeMount() {
         this.scheme = chains[this.getUrlParams().index].value;
     }
 });
