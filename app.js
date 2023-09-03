@@ -38,22 +38,27 @@ var index = new Vue({
             {
                 name: 'playground',
                 path: 'playground/ui/#/?index=2&user=coffee&user=beer&user=bachata&place=cafe&place=icecream',
-                description: 'Схема фильтрации(index=2) в Playground. Результат true/false',
+                description: 'Запуск фильтрации(index=2) в Playground. Результат true/false',
             },
             {
                 name: 'playground',
                 path: 'playground/ui/#/?index=2&user=Ценитель%20кофе&user=Гурман&place=Кафе&place=Вкусный%20кофе',
-                description: 'Схема фильтрации(index=2) в Playground. Результат true/true',
+                description: 'Запуск фильтрации(index=2) в Playground',
             },
             {
                 name: 'playground',
                 path: 'playground/ui/#/?index=4&user=coffee&user=beer&user=bachata&place=cafe&place=icecream',
-                description: 'Схема агрегации(index=4) в Playground',
+                description: 'Запуск агрегации(index=4) в Playground',
             },
             {
                 name: 'playground-raw',
-                path: 'playground/raw/#/?index=4&user=coffee&user=beer&user=bachata&place=cafe&place=icecream',
-                description: 'Схема агрегации(index=4) в Playground, raw-режим',
+                path: 'playground/raw/#/?index=2&user=Ценитель%20кофе&user=Гурман&place=Кафе&place=Вкусный%20кофе',
+                description: 'Запуск фильтрации(index=2) в Playground. Результат true/false',
+            },
+            {
+                name: 'playground-raw',
+                path: 'playground/raw/#/?index=4',
+                description: 'Запуск агрегации(index=4) в Playground, raw-режим. Результат массив объектов',
             }
         ],
     },
