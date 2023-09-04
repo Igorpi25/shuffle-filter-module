@@ -42,7 +42,7 @@
 </head>
 
 <body>
-    <div id="app" tabindex="-1" class="flex bg-white">
+    <div id="app" @focus="onSelectItem({})" tabindex="-1" class="flex bg-white">
 
         <!-- White board -->
         <div class="flex flex-grow bg-white py-16 px-2 space-x-2 overflow-scroll">
@@ -115,9 +115,28 @@
         </div>
 
         <!-- Side Menu -->
-        <div class="flex-grow bg-gray-100  w-40 h-screen">
+        <div tabindex="-1" class="flex-grow bg-gray-100  w-40 h-screen">
+            <!-- Selected Element panel -->
             <div v-if="selectedItemIsNotEmpty" class="flex flex-col border-1 border">
                 <node-panel :local="scheme?.params?.local"  :incoming="scheme?.params?.incoming" :schema="scheme.scheme" :selected-item="selectedItem" />
+            </div>
+            <!-- Save/Load scheme panel -->
+            <div v-else>
+                <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                    <h2 class="text-bold">Scheme in Local Storage</h2>
+                </div>
+                <div class="flex flex-col p-2 space-y-2">
+                    <div>
+                        <span class="font-bold">Saved at:</span>
+                        <span class="text-xs">{{getSavedAt()}}</span>
+                    </div>
+                    <button @click="saveSchemeInLocaleStorage()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
+                        Save
+                    </button>
+                    <button @click="loadSchemeFromLocaleStorage()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
+                        Load
+                    </button>
+                </div>
             </div>
         </div>
     </div>
