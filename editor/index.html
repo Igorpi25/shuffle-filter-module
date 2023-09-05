@@ -123,7 +123,18 @@
             <!-- Save/Load scheme panel -->
             <div v-else>
                 <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                    <h2 class="text-bold">Scheme in Local Storage</h2>
+                    <h2 class="text-bold">File</h2>
+                </div>
+                <div class="flex flex-col p-2 space-y-2">
+                    <button @click="downloadScheme()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
+                        Save as ...
+                    </button>
+                    <button @click="openScheme()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
+                        Open
+                    </button>
+                </div>
+                <div class="flex bg-gray-200 p-2 rounded-b-lg">
+                    <h2 class="text-bold">Local Storage</h2>
                 </div>
                 <div class="flex flex-col p-2 space-y-2">
                     <div v-for="(item, index) in savedSchemes" class="flex flex-col">
@@ -137,18 +148,18 @@
                                     Load
                                 </button>
                             </div>
-                            <div class="flex flex-col grow items-end">
+                            <div class="flex flex-col grow items-end space-y-1">
                                 <button @click="updateSchemeInLocaleStorage(index)" class="text-xs p-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 rounded focus:outline-none focus:ring focus:bg-yellow-300">
                                     Update
                                 </button>
                                 <button @click="deleteSchemeFromLocaleStorage(index)" class="text-xs p-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                                    Delete
+                                    Remove
                                 </button>
                             </div>
                         </div>
                     </div>
                     <button @click="saveSchemeInLocaleStorage()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                        Create
+                        Add
                     </button>
                 </div>
             </div>
