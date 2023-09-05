@@ -6,6 +6,13 @@ var app = new Vue({
         message: '(nothing selected)',
         scheme: {},
         selectedItem: {},
+        savedSchemes: [],
+    },
+    watch: {
+        savedSchemes(newValue) {
+            const parsed = JSON.stringify(newValue);
+            localStorage.savedSchemes = parsed;
+        },
     },
     computed: {
         selectedItemIsNotEmpty() {
@@ -24,32 +31,17 @@ var app = new Vue({
         },
         saveSchemeInLocaleStorage() {
             this.scheme.savedAt = Date();
-            const parsed = JSON.stringify(this.scheme);
-            localStorage.setItem('scheme', parsed);
+            this.savedSchemes.push(JSON.parse(JSON.stringify(this.scheme)));
         },
-        loadSchemeFromLocaleStorage() {
-            if (localStorage.getItem('scheme')) {
-                try {
-                  this.scheme = JSON.parse(localStorage.getItem('scheme'));
-                } catch(e) {
-                  //localStorage.removeItem('scheme');
-                  console.log("loadSchemeFromLocaleStorage e="+e);
-                }
-              }
+        loadSchemeFromLocaleStorage(index) {
+            let loadedScheme = this.savedSchemes[index];
+            this.scheme = JSON.parse(JSON.stringify(loadedScheme));
         },
-        getSavedAt() {
-            if (localStorage.getItem('scheme')) {
-                try {
-                  let savedScheme = JSON.parse(localStorage.getItem('scheme'));
-                  return savedScheme.savedAt;
-                } catch(e) {
-                  //localStorage.removeItem('scheme');
-                  console.log("loadSchemeFromLocaleStorage e="+e);
-                }
-            } else {
-                return '(no saved scheme)';
-            }
-
+        updateSchemeInLocaleStorage(index) {
+            this.savedSchemes[index]=JSON.parse(JSON.stringify(this.scheme));
+        },
+        deleteSchemeFromLocaleStorage(index) {
+            this.savedSchemes.splice(index, 1);
         }
         
     },
@@ -58,5 +50,14 @@ var app = new Vue({
             this.$route.query.index = 0;
         }
         this.scheme = chains[this.getUrlParams().index].value;
-    }
+    },
+    mounted() {
+        if (localStorage.getItem('savedSchemes')) {
+            try {
+              this.savedSchemes = JSON.parse(localStorage.getItem('savedSchemes'));
+            } catch(e) {
+              console.log("loadSchemeFromLocaleStorage e="+e);
+            }
+        }
+    },
 });
