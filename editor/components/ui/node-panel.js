@@ -1,21 +1,21 @@
 Vue.component('node-panel', {
-    props: ['local', 'incoming', 'schema', 'selectedItem'],
+    props: ['scheme', 'selectedElement'],
     data() {
         return {
             inlineParamValue: '',
         };
     },
     computed: {
-        serializedSelectedItem() {
-            return JSON.stringify(this.selectedItem);
+        serializedSelectedElement() {
+            return JSON.stringify(this.selectedElement);
         }
     },
     watch: {
-        selectedItem: {
+        selectedElement: {
             immediate: true,
-            handler(newSelectedItem) {
-                if (newSelectedItem && newSelectedItem.params) {
-                    const inlineParam = newSelectedItem.params.find((param) => param.source === 'inline');
+            handler(newSelectedElement) {
+                if (newSelectedElement && newSelectedElement.params) {
+                    const inlineParam = newSelectedElement.params.find((param) => param.source === 'inline');
                     if (inlineParam) {
                         this.inlineParamValue = inlineParam.value;
                     }
@@ -27,18 +27,18 @@ Vue.component('node-panel', {
     },
     methods: {
         selectElementById(id) {
-            return findChildById(this.$props.schema, id)
+            return findChildById(this.$props.scheme.scheme, id)
         },
         selectParentById(id) {
-            return findParentByChildId(this.$props.schema, id)
+            return findParentByChildId(this.$props.scheme.scheme, id)
         },
-        getSchemeResult: function (scheme) {
-            if (scheme) {
-                return runElement(scheme, this.$props.local || {}, this.$props.incoming || {});
+        getElementResult: function (element) {
+            if (element) {
+                return runElement({scheme: this.$props.scheme, element: element});
             }
 
-            if (this.$props.selectedItem) {
-                return runElement(this.selectedItem, this.$props.local || {}, this.$props.incoming || {});
+            if (this.$props.selectedElement) {
+                return runElement({scheme: this.$props.scheme, element: this.selectedElement});
             }
         },
         handlerOnMoveItem: function ({ direction, id }) {
@@ -46,7 +46,7 @@ Vue.component('node-panel', {
 
             const blinkMeAndFocus = () => {
                 this.$nextTick(() => {
-                    const selectedItemElement = document.getElementById(this.selectedItem.id);
+                    const selectedItemElement = document.getElementById(this.selectedElement.id);
                     if (selectedItemElement) {
                         selectedItemElement.classList.add('blink-animation');
                         setTimeout(() => {
@@ -58,19 +58,19 @@ Vue.component('node-panel', {
             }
 
             if (parent) {
-                const index = this.selectedItem.id
-                    ? parent.childs.findIndex((child) => child.id === this.selectedItem.id)
-                    : parent.childs.findIndex((child) => child === this.selectedItem);
+                const index = this.selectedElement.id
+                    ? parent.childs.findIndex((child) => child.id === this.selectedElement.id)
+                    : parent.childs.findIndex((child) => child === this.selectedElement);
 
                 if (-1 !== index) {
                     if (direction === "forward" && index < parent.childs.length - 1) {
                         parent.childs.splice(index, 1);
-                        parent.childs.splice(index + 1, 0, this.selectedItem);
+                        parent.childs.splice(index + 1, 0, this.selectedElement);
 
                         blinkMeAndFocus();
                     } else if (direction === "backward" && index > 0) {
                         parent.childs.splice(index, 1);
-                        parent.childs.splice(index - 1, 0, this.selectedItem);
+                        parent.childs.splice(index - 1, 0, this.selectedElement);
 
                         blinkMeAndFocus();
                     }
@@ -81,9 +81,9 @@ Vue.component('node-panel', {
             const parent = this.selectParentById(id)
 
             if (parent) {
-                const index = this.selectedItem.id
-                    ? parent.childs.findIndex((child) => child.id === this.selectedItem.id)
-                    : parent.childs.findIndex((child) => child === this.selectedItem);
+                const index = this.selectedElement.id
+                    ? parent.childs.findIndex((child) => child.id === this.selectedElement.id)
+                    : parent.childs.findIndex((child) => child === this.selectedElement);
 
                 if (-1 !== index) {
                     parent.childs.splice(index, 1);
@@ -91,8 +91,8 @@ Vue.component('node-panel', {
             }
         },
         saveInlineParamValue() {
-            if (this.selectedItem && this.selectedItem.params) {
-                const inlineParam = this.selectedItem.params.find((param) => param.source === 'inline');
+            if (this.selectedElement && this.selectedElement.params) {
+                const inlineParam = this.selectedElement.params.find((param) => param.source === 'inline');
                 try {
                     const newValueAsArr = String(this.inlineParamValue).split(',').map(v => String(v).trim()).filter(v => v !== undefined);
                     if (inlineParam && Array.isArray(newValueAsArr)) {
@@ -105,36 +105,36 @@ Vue.component('node-panel', {
         },
     },
     template: `
-    <div v-if="selectedItem" class="flex flex-col border-1 border">
+    <div v-if="selectedElement" class="flex flex-col border-1 border">
         <!-- Properties -->
         <div>
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">Properties</h2>
             </div>
             <div class="flex flex-col p-2">
-                <div v-if="selectedItem.id!=null">
-                    <div v-if="'shuffle-filter' == selectedItem.type">
-                        <input v-model="selectedItem.id" />
+                <div v-if="selectedElement.id!=null">
+                    <div v-if="'shuffle-filter' == selectedElement.type">
+                        <input v-model="selectedElement.id" />
                     </div>
-                    <span v-else>id: {{ selectedItem.id }}</span>
+                    <span v-else>id: {{ selectedElement.id }}</span>
                     
                 </div>
 
-                <div v-if="selectedItem.type">
-                    <span>type: {{ selectedItem.type }}</span>
+                <div v-if="selectedElement.type">
+                    <span>type: {{ selectedElement.type }}</span>
                 </div>
 
-                <div v-if="selectedItem.result != null" class="text-gray-400">
-                    <div v-if="'shuffle-filter' == selectedItem.type">
-                        <input v-model="selectedItem.result" />
+                <div v-if="selectedElement.result != null" class="text-gray-400">
+                    <div v-if="'shuffle-filter' == selectedElement.type">
+                        <input v-model="selectedElement.result" />
                     </div>
-                    <span v-else>type: {{ selectedItem.result }}</span>
+                    <span v-else>type: {{ selectedElement.result }}</span>
                 </div>
             </div>           
         </div>
 
         <!-- Childs -->
-        <div v-if="selectedItem.childs">
+        <div v-if="selectedElement.childs">
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">
                     Childs
@@ -142,14 +142,14 @@ Vue.component('node-panel', {
             </div>
             
             <div class="flex flex-col p-2">
-                <div v-for="child in selectedItem.childs" :key="child.id">
-                    {{ child.type }} <span class="text-gray-400"> -> {{ getSchemeResult(child) }}</span>
+                <div v-for="child in selectedElement.childs" :key="child.id">
+                    {{ child.type }} <span class="text-gray-400"> -> {{ getElementResult(child) }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Params -->
-        <div v-for="param in selectedItem.params" :key="param.name">
+        <div v-for="param in selectedElement.params" :key="param.name">
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">Param: {{ param.name }}</h2>
             </div>
@@ -166,10 +166,10 @@ Vue.component('node-panel', {
                     <br /><span class="italic text-sm">(укажите значения свойства через запятую, чтобы сохранить новое значение - нажмите Enter)</span>
                 </div>
                 <div v-else-if="param.source == 'local'" class="text-gray-400">
-                    local-value: {{ local[param.key] }}
+                    local-value: {{ scheme.params.local[param.key] }}
                 </div>
                 <div v-else-if="param.source == 'incoming'" class="text-gray-400">
-                    incoming-value: {{ incoming[param.key] }}
+                    incoming-value: {{ scheme.params.incoming[param.key] }}
                 </div>
             </div>
         </div>
@@ -181,7 +181,7 @@ Vue.component('node-panel', {
             </div>
             <div class="flex flex-col p-2">
                 <div>
-                    getSchemeResult = {{ getSchemeResult(selectedItem) }}
+                    getElementResult = {{ getElementResult(selectedElement) }}
                 </div>
             </div>
         </div>
@@ -192,7 +192,7 @@ Vue.component('node-panel', {
                 <h2 class="text-bold">Operations</h2>
             </div>
             <div class="flex flex-col p-2">
-                <node-moving-subpanel :selected-item="selectedItem" @on-move-item="handlerOnMoveItem" @on-remove-item="handlerOnRemoveItem" />
+                <node-moving-subpanel :selected-item="selectedElement" @on-move-item="handlerOnMoveItem" @on-remove-item="handlerOnRemoveItem" />
             </div>
         </div>
 
@@ -202,7 +202,7 @@ Vue.component('node-panel', {
                 <h2 class="text-bold">Raw</h2>
             </div>
             <div class="flex flex-col p-2">
-                <collapse-extend-text :text="serializedSelectedItem" :maxLength="10" />
+                <collapse-extend-text :text="serializedSelectedElement" :maxLength="10" />
             </div>
         </div>
     </div>

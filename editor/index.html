@@ -118,7 +118,7 @@
         <div tabindex="-1" class="flex-grow bg-gray-100  w-40 h-screen">
             <!-- Selected Element panel -->
             <div v-if="selectedItemIsNotEmpty" class="flex flex-col border-1 border">
-                <node-panel :local="scheme?.params?.local"  :incoming="scheme?.params?.incoming" :schema="scheme.scheme" :selected-item="selectedItem" />
+                <node-panel :scheme="scheme" :selected-element="selectedItem" />
             </div>
             <!-- Save/Load scheme panel -->
             <div v-else>

@@ -1,65 +1,62 @@
-function getParamValue(param, local, incoming) {
+function getParamValue({scheme, param}) {
     switch (param.source) {
         case 'inline':
             return param.value;
         case 'local':
-            return local[param.key];
+            return scheme.params.local[param.key];
         case 'incoming':
-            return incoming[param.key];
+            return scheme.params.incoming[param.key];
         default:
             return [];
     }
 }
 
-function runFilterIntersection(element, local, incoming) {
-    if (0 < element.params.length && element.params.length % 2 !== 0) {
-        throw new Error('Number of params should be even.');
+function runFilterIntersection({scheme, element}) {
+
+    let first = getParamValue({scheme: scheme, param: element.params[0]});
+
+    for (let i = 1; i < element.params.length; i++) {
+        let second = getParamValue({scheme: scheme, param: element.params[i]});
+        if (0 < first.filter(x => second.indexOf(x) !== -1).length) return true;
     }
-
-    let first = getParamValue(element.params[0], local, incoming);
-    let second = getParamValue(element.params[1], local, incoming);
-
-    if (!Array.isArray(first) || !Array.isArray(second)) {
-        throw new Error('Params should be arrays.');
-    }
-
-    return 0 < first.filter(x => second.indexOf(x) !== -1).length;
+    
+    return false;
 }
 
-function runFilter(element, local, incoming) {
+function runFilter({scheme, element}) {
     const result = "string" === typeof element.result ? element.result === "true" : !!element.result;
     return result;
 }
 
-function runRow(element, local, incoming) {
+function runRow({scheme, element}) {
     for (let child of element.childs) {
-        if (!runElement(child, local, incoming)) return false;
+        if (!runElement({scheme: scheme, element: child})) return false;
     }
     return true;
 }
 
-function runColumn(element, local, incoming) {
+function runColumn({scheme, element}) {
     for (let child of element.childs) {
-        if (runElement(child, local, incoming)) return true;
+        if (runElement({scheme: scheme, element: child})) return true;
     }
     return false;
 }
 
-function runAggregationItem(element, local, incoming) {
+function runAggregationItem({scheme, element}) {
     return element;
 }
 
 // TODO hardcoded. target ignored
-function calculateItemInScheme(item, local, incoming) {
+function calculateItemInScheme({scheme, item}) {
     
-    let chain = incoming.chain;
+    let chain = scheme.params.incoming.chain;
 
     chain.params.incoming.place = item.value;
 
-    return runElement(chain.scheme,chain.params.local,chain.params.incoming);
+    return runElement({ scheme: chain, element: chain.scheme});
 }
 
-function runAggregationList(element, local, incoming) {
+function runAggregationList({scheme, element}) {
     let result = []
     for (let child of element.childs) {
         if(child.type == 'shuffle-aggregation-item'){
@@ -69,41 +66,42 @@ function runAggregationList(element, local, incoming) {
     return result;
 }
 
-function runAggregationFilter(element, local, incoming) {
+function runAggregationFilter({scheme, element}) {
+    
     let result = []
     for (let child of element.childs) {
         if(child.type == 'shuffle-aggregation-item'){
-            if(calculateItemInScheme(child,local,incoming)){
+            if(calculateItemInScheme({scheme: scheme, item: child})){
                 result.push(child);
             }
         }else if(child.type == 'shuffle-aggregation-list'){
-            result.push(...runAggregationFilter(child,local, incoming))
+            result.push(...runAggregationFilter({scheme:scheme, element: child}))
         }   
     }
     return result;
 }
 
-function runElement(element, local, incoming) {
+function runElement({scheme, element}) {
     switch (element.type) {
         case 'shuffle-filter':
-            return runFilter(element, local, incoming);
+            return runFilter({scheme: scheme, element: element});
         case 'shuffle-filter-intersection':
-            return runFilterIntersection(element, local, incoming);
+            return runFilterIntersection({scheme: scheme, element: element});
         case 'shuffle-row':
-            return runRow(element, local, incoming);
+            return runRow({scheme: scheme, element: element});
         case 'shuffle-column':
-            return runColumn(element, local, incoming);
+            return runColumn({scheme: scheme, element: element});
         case 'shuffle-aggregation-item':
-            return runAggregationItem(element, local, incoming);
+            return runAggregationItem({scheme: scheme, element: element});
         case 'shuffle-aggregation-list':
-            return runAggregationList(element, local, incoming);
+            return runAggregationList({scheme: scheme, element: element});
         case 'shuffle-aggregation-filter':
-            return runAggregationFilter(element, local, incoming);
+            return runAggregationFilter({scheme: scheme, element: element});
         default:
             return false;
     }
 }
 
 function runScheme(scheme) {
-    return runElement(scheme.scheme, scheme.params?.local, scheme.params?.incoming);
+    return runElement({scheme: scheme, element: scheme.scheme});
 }
