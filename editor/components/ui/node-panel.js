@@ -27,10 +27,10 @@ Vue.component('node-panel', {
     },
     methods: {
         selectElementById(id) {
-            return searchInSchemeById(this.$props.schema, id)
+            return findChildById(this.$props.schema, id)
         },
         selectParentById(id) {
-            return findParentShuffleElement(this.$props.schema, id)
+            return findParentByChildId(this.$props.schema, id)
         },
         getSchemeResult: function (scheme) {
             if (scheme) {

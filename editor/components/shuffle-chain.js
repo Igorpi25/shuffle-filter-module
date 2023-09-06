@@ -22,7 +22,7 @@ Vue.component('shuffle-chain', {
             }
         },
         selectElementById(id) {
-            return searchInSchemeById(this.$props.schema, id)
+            return findChildById(this.$props.schema, id)
         }
     },
     template: `
