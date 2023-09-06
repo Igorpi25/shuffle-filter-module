@@ -34,11 +34,11 @@ Vue.component('node-panel', {
         },
         getSchemeResult: function (scheme) {
             if (scheme) {
-                return runNode(scheme, this.$props.local || {}, this.$props.incoming || {});
+                return runElement(scheme, this.$props.local || {}, this.$props.incoming || {});
             }
 
             if (this.$props.selectedItem) {
-                return runNode(this.selectedItem, this.$props.local || {}, this.$props.incoming || {});
+                return runElement(this.selectedItem, this.$props.local || {}, this.$props.incoming || {});
             }
         },
         handlerOnMoveItem: function ({ direction, id }) {
