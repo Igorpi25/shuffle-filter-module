@@ -11,7 +11,6 @@ var app = new Vue({
     watch: {
         savedSchemes: {
             handler(newValue, oldValue) {
-                console.log('watch.savedSchemes.handler');
                 const parsed = JSON.stringify(newValue);
                 localStorage.savedSchemes = parsed;
             },
