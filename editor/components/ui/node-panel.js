@@ -41,7 +41,7 @@ Vue.component('node-panel', {
                 return runElement({scheme: this.$props.scheme, element: this.selectedElement});
             }
         },
-        handlerOnMoveItem: function ({ direction, id }) {
+        handlerOnMoveElement: function ({ direction, id }) {
             const parent = this.selectParentById(id)
 
             const blinkMeAndFocus = () => {
@@ -77,7 +77,7 @@ Vue.component('node-panel', {
                 }
             }
         },
-        handlerOnRemoveItem: function (id) {
+        handlerOnRemoveElement: function (id) {
             const parent = this.selectParentById(id)
 
             if (parent) {
@@ -192,7 +192,7 @@ Vue.component('node-panel', {
                 <h2 class="text-bold">Operations</h2>
             </div>
             <div class="flex flex-col p-2">
-                <node-moving-subpanel :selected-item="selectedElement" @on-move-item="handlerOnMoveItem" @on-remove-item="handlerOnRemoveItem" />
+                <node-moving-subpanel :selected-item="selectedElement" @on-move-item="handlerOnMoveElement" @on-remove-item="handlerOnRemoveElement" />
             </div>
         </div>
 
