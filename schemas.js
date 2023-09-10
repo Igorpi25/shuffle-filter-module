@@ -1143,8 +1143,8 @@ var AggregationScheme = {
                 {
                     name: 'Places from incoming',
                     type: 'items',
-                    source: 'inline',
-                    value: Places,
+                    source: 'incoming',
+                    key: 'items',
                 },
             ],
         },
