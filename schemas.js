@@ -1121,11 +1121,32 @@ var Places = [
 var AggregationScheme = {
     id: 'AggregationScheme',
     type: 'shuffle-aggregation-filter',
+    params: [
+        {
+            name: 'Filtering scheme',
+            type: 'scheme',
+            source: 'incoming',
+            key: 'scheme',
+        },
+        {
+            name: 'Target',
+            type: 'target',
+            source: 'incoming',
+            key: 'target',
+        },
+    ],
     childs: [
         {
             id: 'places-list',
             type: 'shuffle-aggregation-list',
-            childs: Places,
+            params: [
+                {
+                    name: 'Places from incoming',
+                    type: 'items',
+                    source: 'inline',
+                    value: Places,
+                },
+            ],
         },
     ]
 };
@@ -1135,8 +1156,9 @@ var ActiveTigerAggregation = {
     type: 'aggregation',
     params: {
         incoming: {
-            chain: ActiveTigerAsIncomingParam,
+            scheme: ActiveTigerAsIncomingParam,
             items: Places,
+            target: 'place',
         }
     } ,
     scheme: JSON.parse(JSON.stringify(AggregationScheme)),
@@ -1147,8 +1169,9 @@ var FamilyFunAggregation = {
     type: 'aggregation',
     params: {
         incoming: {
-            chain: FamilyFunAsIncomingParam,
+            scheme: FamilyFunAsIncomingParam,
             items: Places,
+            target: 'place',
         }
     } ,
     scheme: JSON.parse(JSON.stringify(AggregationScheme)),

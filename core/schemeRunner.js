@@ -46,39 +46,47 @@ function runAggregationItem({scheme, element}) {
     return element;
 }
 
-// TODO hardcoded. target ignored
-function calculateItemInScheme({scheme, item}) {
+function calculateFilteringSchemeWithIncomingValue({filteringScheme, key, value}) {
     
-    let chain = scheme.params.incoming.chain;
+    filteringScheme.params.incoming[key] = value;
 
-    chain.params.incoming.place = item.value;
-
-    return runElement({ scheme: chain, element: chain.scheme});
+    return runScheme(filteringScheme);
 }
 
 function runAggregationList({scheme, element}) {
-    let result = []
-    for (let child of element.childs) {
-        if(child.type == 'shuffle-aggregation-item'){
-            result.push(child);
-        }
+    let result = [];
+    for (let param of element.params) {
+       let items = getParamValue({scheme: scheme, param: param});
+       result.push(...items);
     }
     return result;
 }
 
 function runAggregationFilter({scheme, element}) {
     
-    let result = []
+    let items = [];
     for (let child of element.childs) {
-        if(child.type == 'shuffle-aggregation-item'){
-            if(calculateItemInScheme({scheme: scheme, item: child})){
-                result.push(child);
-            }
-        }else if(child.type == 'shuffle-aggregation-list'){
-            result.push(...runAggregationFilter({scheme:scheme, element: child}))
-        }   
+        items.push(...runElement({scheme: scheme, element: child}));
     }
+
+    let filteringScheme = getParamValue({scheme: scheme, param: element.params.find((param) => param.type === 'scheme')});
+    let targetKey = getParamValue({scheme: scheme, param: element.params.find((param) => param.type === 'target')});
+
+    let filteringSchemeCopy = JSON.parse(JSON.stringify(filteringScheme)); //use copy to prevent unlimited cycle
+
+    let result = [];
+    for (let item of items) {
+        if(calculateFilteringSchemeWithIncomingValue({
+            filteringScheme: filteringSchemeCopy,
+            key: targetKey,
+            value: item.value,
+        }) === true) {
+            result.push(item);
+        }
+    }
+
     return result;
+    
 }
 
 function runElement({scheme, element}) {
@@ -91,8 +99,6 @@ function runElement({scheme, element}) {
             return runRow({scheme: scheme, element: element});
         case 'shuffle-column':
             return runColumn({scheme: scheme, element: element});
-        case 'shuffle-aggregation-item':
-            return runAggregationItem({scheme: scheme, element: element});
         case 'shuffle-aggregation-list':
             return runAggregationList({scheme: scheme, element: element});
         case 'shuffle-aggregation-filter':
