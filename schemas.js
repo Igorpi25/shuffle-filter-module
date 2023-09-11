@@ -1076,6 +1076,7 @@ var Places = [
     {   
         id: 'Family Restoran',
         type: 'shuffle-aggregation-item',
+        date: '2019-09-09 23:00:00',
         value: [
             'Рестораны',
             'Винная карта',
@@ -1089,6 +1090,7 @@ var Places = [
     {
         id: 'Italian Classic Restoran',
         type: 'shuffle-aggregation-item',
+        date: '1812-10-02 00:00:00',
         value: [
             'Рестораны',
             'Кондиционеры на терассе',
@@ -1105,6 +1107,7 @@ var Places = [
     {
         id: 'Scottish Pub',
         type: 'shuffle-aggregation-item',
+        date: '1943-01-20 00:00:00',
         value: [
             'Пабы',
             'Живая музыка',
@@ -1117,6 +1120,39 @@ var Places = [
         ],
     }
 ];
+
+var AggregationSchemeOrder = {
+    id: 'AggregationScheme',
+    type: 'shuffle-aggregation-order',
+    params: [
+        {
+            name: 'Order dir',
+            type: 'order-direction',
+            source: 'inline',
+            value: 'asc',
+        },
+        {
+            name: 'Order by',
+            type: 'order-by',
+            source: 'inline',
+            value: 'date',
+        },
+    ],
+    childs: [
+        {
+            id: 'places-list',
+            type: 'shuffle-aggregation-list',
+            params: [
+                {
+                    name: 'Places from incoming',
+                    type: 'items',
+                    source: 'incoming',
+                    key: 'items',
+                },
+            ],
+        },
+    ],
+};
 
 var AggregationScheme = {
     id: 'AggregationScheme',
@@ -1149,8 +1185,22 @@ var AggregationScheme = {
             ],
         },
         {
-            id: 'join-for-lists',
-            type: 'shuffle-aggregation-join',
+            id: 'join-order',
+            type: 'shuffle-aggregation-order',
+            params: [
+                {
+                    name: 'Order dir',
+                    type: 'order-direction',
+                    source: 'inline',
+                    value: 'asc',
+                },
+                {
+                    name: 'Order by',
+                    type: 'order-by',
+                    source: 'inline',
+                    value: 'date',
+                },
+            ],
             childs: [
                 {
                     id: 'places-list-second',
@@ -1191,7 +1241,7 @@ var ActiveTigerAggregation = {
             target: 'place',
         }
     } ,
-    scheme: JSON.parse(JSON.stringify(AggregationScheme)),
+    scheme: JSON.parse(JSON.stringify(AggregationSchemeOrder)),
 };
 
 var FamilyFunAggregation = {

@@ -106,7 +106,7 @@
             <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-row')||(scheme.scheme.type=='shuffle-column')||(scheme.scheme.type=='shuffle-filter')||((scheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
                 <span class="text-gray-400">{{runSchemeResult}}</span>
             </div>  
-            <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-aggregation-list')||(scheme.scheme.type=='shuffle-aggregation-filter'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
+            <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-aggregation-list')||(scheme.scheme.type=='shuffle-aggregation-filter')||(scheme.scheme.type=='shuffle-aggregation-join')||(scheme.scheme.type=='shuffle-aggregation-order'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
                 <div v-for="child in runSchemeResult" class="text-gray-600 p-2  bg-stone-100">
                     {{child.id}}
                 </div>
@@ -183,6 +183,7 @@
     <script src="components/shuffle-aggregation-filter.js"></script>
     <script src="components/shuffle-aggregation-list.js"></script>
     <script src="components/shuffle-aggregation-join.js"></script>
+    <script src="components/shuffle-aggregation-order.js"></script>
     <script src="components/shuffle-chain.js"></script>
     <script src="app.js"></script>
 </body>

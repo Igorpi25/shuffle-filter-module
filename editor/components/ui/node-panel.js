@@ -161,9 +161,12 @@ Vue.component('node-panel', {
 
                 <div v-if="param.key">key: {{ param.key }}</div>
 
-                <div v-if="param.source == 'inline'">
+                <!-- <div v-if="param.source == 'inline'">
                     <input v-model="inlineParamValue" @keydown.enter="saveInlineParamValue" />
                     <br /><span class="italic text-sm">(укажите значения свойства через запятую, чтобы сохранить новое значение - нажмите Enter)</span>
+                </div> -->
+                <div v-if="param.source == 'inline'">
+                    inline-value: {{ param.value }}
                 </div>
                 <div v-else-if="param.source == 'local'" class="text-gray-400">
                     local-value: {{ scheme.params.local[param.key] }}

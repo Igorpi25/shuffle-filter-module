@@ -70,6 +70,28 @@ function runAggregationJoin({scheme, element}) {
     return items;
 }
 
+function runAggregationOrder({scheme, element}) {
+    let items = [];
+    for (let child of element.childs) {
+        items.push(...runElement({scheme: scheme, element: child}));
+    }
+
+    let orderDirection = getParamValue({scheme: scheme, param: element.params.find((param) => param.type === 'order-direction')});
+    let orderBy = getParamValue({scheme: scheme, param: element.params.find((param) => param.type === 'order-by')});
+
+    items.sort(function(a, b) {
+        if(a[orderBy] < b[orderBy]) { return -1; }
+        if(a[orderBy] > b[orderBy]) { return 1; }
+        return 0;
+    });
+
+    if (orderDirection === 'desc') {
+        items.reverse();
+    }
+
+    return items;
+}
+
 function runAggregationFilter({scheme, element}) {
     
     let items = [];
@@ -111,6 +133,8 @@ function runElement({scheme, element}) {
             return runAggregationList({scheme: scheme, element: element});
         case 'shuffle-aggregation-join':
             return runAggregationJoin({scheme: scheme, element: element});
+        case 'shuffle-aggregation-order':
+            return runAggregationOrder({scheme: scheme, element: element});
         case 'shuffle-aggregation-filter':
             return runAggregationFilter({scheme: scheme, element: element});
         default:
