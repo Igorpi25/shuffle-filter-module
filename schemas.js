@@ -206,6 +206,54 @@ var CommonScheme = {
                     ]
                 },
                 {
+                    id: 'Кальянная',
+                    type: 'shuffle-column',
+                    childs: [
+                        {
+                            id: 'Заядлый кальянщик',
+                            type: 'shuffle-filter-intersection',
+                            params: [
+                                {
+                                    name: 'Свойства',
+                                    type: 'set',
+                                    source: 'inline',
+                                    value: ['Любитель кальянов'],
+                                },
+                                {
+                                    name: 'User',
+                                    type: 'set',
+                                    source: 'incoming',
+                                    key: 'user',
+                                }
+                            ]
+                        },
+                        {
+                            id: 'Обычный человек',
+                            type: 'shuffle-not',
+                            childs: [
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Кальяны'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                            ]
+                        },
+                    ],
+                },
+                {
                     id: 'Свойства ресторана',
                     type: 'shuffle-column',
                     childs: [

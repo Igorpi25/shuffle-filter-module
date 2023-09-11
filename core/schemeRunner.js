@@ -42,6 +42,13 @@ function runColumn({scheme, element}) {
     return false;
 }
 
+function runNot({scheme, element}) {
+    for (let child of element.childs) {
+        if (!runElement({scheme: scheme, element: child})) return true;
+    }
+    return false;
+}
+
 function runAggregationItem({scheme, element}) {
     return element;
 }
@@ -127,6 +134,8 @@ function runElement({scheme, element}) {
             return runFilterIntersection({scheme: scheme, element: element});
         case 'shuffle-row':
             return runRow({scheme: scheme, element: element});
+        case 'shuffle-not':
+            return runNot({scheme: scheme, element: element});
         case 'shuffle-column':
             return runColumn({scheme: scheme, element: element});
         case 'shuffle-aggregation-list':
