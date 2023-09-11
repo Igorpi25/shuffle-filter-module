@@ -45,6 +45,23 @@
                 </tbody>
             </table>
         </div>
+        <div class="flex flex-col p-2">
+            <h2 class="mb-2 font-bold">Новые компоненты</h2>
+            <table class="table-auto border">
+                <thead class="border">
+                <tr class="border">
+                    <th class="border">URL (index)</th>
+                    <th class="border">Component</th>
+                </tr>
+                </thead>
+                <tbody class="border">
+                <tr v-for="(page, index) in componentSamples" class="border">
+                    <td class="border p-2"><a :href="page.path" class="text-blue-400 font-underline">{{page.path}}</a></td>
+                    <td class="border p-2">{{page.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>

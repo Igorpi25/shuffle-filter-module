@@ -61,5 +61,22 @@ var index = new Vue({
                 description: 'Запуск агрегации(index=4) в Playground, raw-режим. Результат массив объектов',
             }
         ],
+        componentSamples: [
+            {
+                name: 'editor',
+                path: 'editor/#/?index=16',
+                description: 'shuffle-aggregation-join',
+            },
+            {
+                name: 'editor',
+                path: 'editor/#/?index=17',
+                description: 'shuffle-aggregation-order',
+            },
+            {
+                name: 'editor',
+                path: 'editor/#/?index=18',
+                description: 'shuffle-not',
+            },
+        ],
     },
 });

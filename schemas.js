@@ -206,54 +206,6 @@ var CommonScheme = {
                     ]
                 },
                 {
-                    id: 'Кальянная',
-                    type: 'shuffle-column',
-                    childs: [
-                        {
-                            id: 'Заядлый кальянщик',
-                            type: 'shuffle-filter-intersection',
-                            params: [
-                                {
-                                    name: 'Свойства',
-                                    type: 'set',
-                                    source: 'inline',
-                                    value: ['Любитель кальянов'],
-                                },
-                                {
-                                    name: 'User',
-                                    type: 'set',
-                                    source: 'incoming',
-                                    key: 'user',
-                                }
-                            ]
-                        },
-                        {
-                            id: 'Обычный человек',
-                            type: 'shuffle-not',
-                            childs: [
-                                {
-                                    id: 'Свойства',
-                                    type: 'shuffle-filter-intersection',
-                                    params: [
-                                        {
-                                            name: 'Свойства',
-                                            type: 'set',
-                                            source: 'inline',
-                                            value: ['Кальяны'],
-                                        },
-                                        {
-                                            name: 'Place',
-                                            type: 'set',
-                                            source: 'incoming',
-                                            key: 'place',
-                                        }
-                                    ]
-                                },
-                            ]
-                        },
-                    ],
-                },
-                {
                     id: 'Свойства ресторана',
                     type: 'shuffle-column',
                     childs: [
@@ -1169,39 +1121,6 @@ var Places = [
     }
 ];
 
-var AggregationSchemeOrder = {
-    id: 'AggregationScheme',
-    type: 'shuffle-aggregation-order',
-    params: [
-        {
-            name: 'Order dir',
-            type: 'order-direction',
-            source: 'inline',
-            value: 'asc',
-        },
-        {
-            name: 'Order by',
-            type: 'order-by',
-            source: 'inline',
-            value: 'date',
-        },
-    ],
-    childs: [
-        {
-            id: 'places-list',
-            type: 'shuffle-aggregation-list',
-            params: [
-                {
-                    name: 'Places from incoming',
-                    type: 'items',
-                    source: 'incoming',
-                    key: 'items',
-                },
-            ],
-        },
-    ],
-};
-
 var AggregationScheme = {
     id: 'AggregationScheme',
     type: 'shuffle-aggregation-filter',
@@ -1234,21 +1153,7 @@ var AggregationScheme = {
         },
         {
             id: 'join-order',
-            type: 'shuffle-aggregation-order',
-            params: [
-                {
-                    name: 'Order dir',
-                    type: 'order-direction',
-                    source: 'inline',
-                    value: 'asc',
-                },
-                {
-                    name: 'Order by',
-                    type: 'order-by',
-                    source: 'inline',
-                    value: 'date',
-                },
-            ],
+            type: 'shuffle-aggregation-join',
             childs: [
                 {
                     id: 'places-list-second',
@@ -1289,7 +1194,7 @@ var ActiveTigerAggregation = {
             target: 'place',
         }
     } ,
-    scheme: JSON.parse(JSON.stringify(AggregationSchemeOrder)),
+    scheme: JSON.parse(JSON.stringify(AggregationScheme)),
 };
 
 var FamilyFunAggregation = {
@@ -1303,6 +1208,707 @@ var FamilyFunAggregation = {
         }
     } ,
     scheme: JSON.parse(JSON.stringify(AggregationScheme)),
+};
+
+// Aggregation New Components Samples
+
+// shuffle-aggregation-join
+
+var JoinSampleScheme = {
+    id: 'JoinSampleScheme',
+    type: 'shuffle-aggregation-filter',
+    params: [
+        {
+            name: 'Filtering scheme',
+            type: 'scheme',
+            source: 'incoming',
+            key: 'scheme',
+        },
+        {
+            name: 'Target',
+            type: 'target',
+            source: 'incoming',
+            key: 'target',
+        },
+    ],
+    childs: [
+        {
+            id: 'places-list',
+            type: 'shuffle-aggregation-list',
+            params: [
+                {
+                    name: 'Places from incoming',
+                    type: 'items',
+                    source: 'incoming',
+                    key: 'items',
+                },
+            ],
+        },
+        {
+            id: 'join-order',
+            type: 'shuffle-aggregation-join',
+            childs: [
+                {
+                    id: 'places-list-second',
+                    type: 'shuffle-aggregation-list',
+                    params: [
+                        {
+                            name: 'Second places',
+                            type: 'items',
+                            source: 'incoming',
+                            key: 'items',
+                        },
+                    ],
+                },
+                {
+                    id: 'places-list-third',
+                    type: 'shuffle-aggregation-list',
+                    params: [
+                        {
+                            name: 'Third places',
+                            type: 'items',
+                            source: 'incoming',
+                            key: 'items',
+                        },
+                    ],
+                }
+            ]
+        },
+    ]
+};
+
+var JoinSampleChain = {
+    id: 'JoinSampleChain',
+    type: 'aggregation',
+    params: {
+        incoming: {
+            scheme: ActiveTigerAsIncomingParam,
+            items: Places,
+            target: 'place',
+        }
+    } ,
+    scheme: JSON.parse(JSON.stringify(JoinSampleScheme)),
+};
+
+// shuffle-aggregation-order
+
+var OrderSampleScheme = {
+    id: 'OrderSampleScheme',
+    type: 'shuffle-aggregation-order',
+    params: [
+        {
+            name: 'Order dir',
+            type: 'order-direction',
+            source: 'inline',
+            value: 'asc',
+        },
+        {
+            name: 'Order by',
+            type: 'order-by',
+            source: 'inline',
+            value: 'date',
+        },
+    ],
+    childs: [
+        {
+            id: 'places-list',
+            type: 'shuffle-aggregation-list',
+            params: [
+                {
+                    name: 'Places from incoming',
+                    type: 'items',
+                    source: 'incoming',
+                    key: 'items',
+                },
+            ],
+        },
+    ],
+};
+
+var OrderSampleChain = {
+    id: 'OrderSampleChain',
+    type: 'aggregation',
+    params: {
+        incoming: {
+            scheme: ActiveTigerAsIncomingParam,
+            items: Places,
+            target: 'place',
+        }
+    } ,
+    scheme: JSON.parse(JSON.stringify(OrderSampleScheme)),
+};
+
+// shuffle-not
+
+var NotSampleScheme = {
+    id: 'NotSampleScheme',
+    type: 'shuffle-column',
+    childs: [
+        {
+            id: 'Restoran group',
+            type: 'shuffle-row',
+            childs: [
+                {
+                    id: 'Рестораны',
+                    type: 'shuffle-filter-intersection',
+                    params: [
+                        {
+                            name: 'Alpha',
+                            type: 'set',
+                            source: 'inline',
+                            value: ['Рестораны'],
+                        },
+                        {
+                            name: 'Beta',
+                            type: 'set',
+                            source: 'incoming',
+                            key: "place",
+                        }
+                    ]
+                },
+                {
+                    id: 'Кальянная',
+                    type: 'shuffle-column',
+                    childs: [
+                        {
+                            id: 'Заядлый кальянщик',
+                            type: 'shuffle-filter-intersection',
+                            params: [
+                                {
+                                    name: 'Свойства',
+                                    type: 'set',
+                                    source: 'inline',
+                                    value: ['Любитель кальянов'],
+                                },
+                                {
+                                    name: 'User',
+                                    type: 'set',
+                                    source: 'incoming',
+                                    key: 'user',
+                                }
+                            ]
+                        },
+                        {
+                            id: 'Обычный человек',
+                            type: 'shuffle-not',
+                            childs: [
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Кальяны'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                            ]
+                        },
+                    ],
+                },
+                {
+                    id: 'Свойства ресторана',
+                    type: 'shuffle-column',
+                    childs: [
+                        {
+                            id: 'Cofe',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Вкусный кофе',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Вкусный кофе'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Ценитель кофе', 'Гурман', 'Гедонист'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'Live music',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Живая музыка',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Живая музыка'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Меломан', 'Люблю танцевать', 'Человек-праздник', 'Живу в ритме нон-стоп'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'Childs room',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Детская комната',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Детская комната'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['С детьми', 'Семьянин'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            id: 'Cafe group',
+            type: 'shuffle-row',
+            childs: [
+                {
+                    id: 'Кафе',
+                    type: 'shuffle-filter-intersection',
+                    params: [
+                        {
+                            name: 'Alpha',
+                            type: 'set',
+                            source: 'inline',
+                            value: ['Кафе'],
+                        },
+                        {
+                            name: 'Beta',
+                            type: 'set',
+                            source: 'incoming',
+                            key: "place",
+                        }
+                    ]
+                },
+                {
+                    id: 'Свойства ресторана',
+                    type: 'shuffle-column',
+                    childs: [
+                        {
+                            id: 'Cofe',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Вкусный кофе',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Вкусный кофе'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Ценитель кофе', 'Гурман', 'Гедонист'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'Childs menu',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Детское меню',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Детское меню'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['С детьми', 'Любящие супруги'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'Childs room',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Детская комната',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Детская комната'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['С детьми', 'Семьянин'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            id: 'Pubs',
+            type: 'shuffle-row',
+            childs: [
+                {
+                    id: 'Пабы',
+                    type: 'shuffle-filter-intersection',
+                    params: [
+                        {
+                            name: 'Alpha',
+                            type: 'set',
+                            source: 'inline',
+                            value: ['Пабы'],
+                        },
+                        {
+                            name: 'Beta',
+                            type: 'set',
+                            source: 'incoming',
+                            key: "place",
+                        }
+                    ]
+                },
+                {
+                    id: 'Свойства паба',
+                    type: 'shuffle-column',
+                    childs: [
+                        {
+                            id: 'Пивная карта',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Пивная карта',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Пивная карта'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Ценитель пива'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'Алкогольная карта',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Алкогольная карта',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Алкогольная карта'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Любитель выпить'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'Gastro',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'Гастро',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойство',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Гастро'],
+                                        },
+                                        {
+                                            name: 'Place',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'Свойства',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'Свойства',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['Разборчивый', 'Любитель сытно поесть'],
+                                        },
+                                        {
+                                            name: 'User',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        }
+    ],
+}
+
+var NotSampleChain = {
+    id: 'NotSampleChain',
+    type: 'filtering',
+    params: {
+        local: {
+            'ballooning-fest': ['sunday', 'beach', 'family'],
+            'hollydays': ['sunday', 'saturday'],
+        },
+        incoming: {
+            // ActiveTiger
+            'user': [
+                'ActiveTiger',
+                'Меломан',
+                'Любитель выпить',
+                'Люблю танцевать ',
+                'Слежу за знаменитостями',
+                'Человек - праздник',
+                'Люблю музыку',
+                'Фолк',
+                'Кантри','Блюз',
+                'Люблю экстрим',
+                'Люблю красивые фото',
+                'Азартный',
+                'Люблю активный отдых',
+                'Тусовщик',
+                'С друзьями',
+                'На приколе',
+                'Открыт к новым впечатлениям',
+                'Живу в ритме нон-стоп',
+                'Провожу время с пользой',
+                'Гедонист',
+            ],
+            // Family Restoran
+            'place': [
+                'Family Restoran',
+                'Рестораны',
+                'Винная карта',
+                'Чайная карта',
+                'Спокойная атмосфера',
+                'Веганское меню',
+                'Алкогольная карта',
+                'Детская комната',
+            ],
+        },
+    },
+    scheme: JSON.parse(JSON.stringify(NotSampleScheme)),
 };
 
 function generateChain(numChildren, maxDepth, isLastFilter = true) {
@@ -1387,16 +1993,19 @@ if (typeof window !== 'undefined') {
     
     window.chains.push({ name: 'MainChain', value: MainChain });
 
+    //ActiveTiger. index from 1
     window.chains.push({ name: 'ActiveTigerInFamilyRestoran', value: ActiveTigerInFamilyRestoran });
     window.chains.push({ name: 'ActiveTigerInItalianClassicRestoran', value: ActiveTigerInItalianClassicRestoran });
     window.chains.push({ name: 'ActiveTigerInPub', value: ActiveTigerInPub });
     window.chains.push({ name: 'ActiveTigerAggregation', value: ActiveTigerAggregation });
     
+    //FamilyFun. index from 5
     window.chains.push({ name: 'FamilyFunInFamilyRestoran', value: FamilyFunInFamilyRestoran });
     window.chains.push({ name: 'FamilyFunInItalianClassicRestoran', value: FamilyFunInItalianClassicRestoran });
     window.chains.push({ name: 'FamilyFunInPub', value: FamilyFunInPub });
     window.chains.push({ name: 'FamilyFunAggregation', value: FamilyFunAggregation });
 
+    //Arab&Russian. index from 9
     window.chains.push({ name: 'ArabInFamilyRestoran', value: ArabInFamilyRestoran });
     window.chains.push({ name: 'RussianInFamilyRestoran', value: RussianInFamilyRestoran });
     
@@ -1405,4 +2014,9 @@ if (typeof window !== 'undefined') {
     window.chains.push({ name: '32 elements with depth 10 random', value: generateChain(32, 10) });
     window.chains.push({ name: '64 elements with depth 12 random', value: generateChain(64, 12) });
     window.chains.push({ name: '128 elements with depth 28 random', value: generateChain(128, 28) });
+
+    //New component samples. index from 16
+    window.chains.push({ name: 'JoinSampleChain', value: JoinSampleChain });
+    window.chains.push({ name: 'OrderSampleChain', value: OrderSampleChain });
+    window.chains.push({ name: 'NotSampleChain', value: NotSampleChain });
 }
