@@ -1148,6 +1148,36 @@ var AggregationScheme = {
                 },
             ],
         },
+        {
+            id: 'join-for-lists',
+            type: 'shuffle-aggregation-join',
+            childs: [
+                {
+                    id: 'places-list-second',
+                    type: 'shuffle-aggregation-list',
+                    params: [
+                        {
+                            name: 'Second places',
+                            type: 'items',
+                            source: 'incoming',
+                            key: 'items',
+                        },
+                    ],
+                },
+                {
+                    id: 'places-list-third',
+                    type: 'shuffle-aggregation-list',
+                    params: [
+                        {
+                            name: 'Third places',
+                            type: 'items',
+                            source: 'incoming',
+                            key: 'items',
+                        },
+                    ],
+                }
+            ]
+        },
     ]
 };
 

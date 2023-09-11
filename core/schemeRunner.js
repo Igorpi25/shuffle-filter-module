@@ -62,6 +62,14 @@ function runAggregationList({scheme, element}) {
     return result;
 }
 
+function runAggregationJoin({scheme, element}) {
+    let items = [];
+    for (let child of element.childs) {
+        items.push(...runElement({scheme: scheme, element: child}));
+    }
+    return items;
+}
+
 function runAggregationFilter({scheme, element}) {
     
     let items = [];
@@ -101,6 +109,8 @@ function runElement({scheme, element}) {
             return runColumn({scheme: scheme, element: element});
         case 'shuffle-aggregation-list':
             return runAggregationList({scheme: scheme, element: element});
+        case 'shuffle-aggregation-join':
+            return runAggregationJoin({scheme: scheme, element: element});
         case 'shuffle-aggregation-filter':
             return runAggregationFilter({scheme: scheme, element: element});
         default:
