@@ -27,8 +27,8 @@ var index = new Vue({
         examples: [
             {
                 name: 'editor',
-                path: 'editor/#/?index=2',
-                description: 'Схема фильрации (index=2)',
+                path: 'editor/#/?index=1',
+                description: 'Схема фильрации Places (index=1)',
             },
             {
                 name: 'editor',
@@ -59,7 +59,12 @@ var index = new Vue({
                 name: 'playground-raw',
                 path: 'playground/raw/#/?index=4',
                 description: 'Запуск агрегации(index=4) в Playground, raw-режим. Результат массив объектов',
-            }
+            },
+            {
+                name: 'editor',
+                path: 'editor/#/?index=19',
+                description: 'Схема фильрации Events (index=19)',
+            },
         ],
         componentSamples: [
             {
