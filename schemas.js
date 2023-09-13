@@ -179,8 +179,8 @@ var SecondChain = {
     }
 };
 
-var CommonScheme = {
-    id: 'CommonScheme',
+var PlaceScheme = {
+    id: 'PlaceScheme',
     type: 'shuffle-column',
     childs: [
         {
@@ -917,7 +917,7 @@ var ActiveTigerInFamilyRestoran = {
             ],
         },
     },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
+    scheme: JSON.parse(JSON.stringify(PlaceScheme)),
 };
 
 var ActiveTigerInItalianClassicRestoran = {
@@ -968,7 +968,7 @@ var ActiveTigerInItalianClassicRestoran = {
             ],
         },
     },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
+    scheme: JSON.parse(JSON.stringify(PlaceScheme)),
 };
 
 var ActiveTigerInPub = {
@@ -1016,7 +1016,7 @@ var ActiveTigerInPub = {
             ],
         },
     },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
+    scheme: JSON.parse(JSON.stringify(PlaceScheme)),
 };
 
 var FamilyFunInFamilyRestoran = {
@@ -1051,7 +1051,7 @@ var FamilyFunInFamilyRestoran = {
             ],
         },
     },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
+    scheme: JSON.parse(JSON.stringify(PlaceScheme)),
 };
 
 var FamilyFunInItalianClassicRestoran = {
@@ -1089,7 +1089,7 @@ var FamilyFunInItalianClassicRestoran = {
             ],
         },
     },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
+    scheme: JSON.parse(JSON.stringify(PlaceScheme)),
 };
 
 var FamilyFunInPub = {
@@ -1124,7 +1124,7 @@ var FamilyFunInPub = {
             ],
         },
     },
-    scheme: JSON.parse(JSON.stringify(CommonScheme)),
+    scheme: JSON.parse(JSON.stringify(PlaceScheme)),
 };
 
 var ArabScheme = {
@@ -1153,7 +1153,7 @@ var ArabScheme = {
                         }
                     ]
                 },
-                CommonScheme,
+                PlaceScheme,
             ]
         },
         {
@@ -2129,6 +2129,435 @@ var NotSampleChain = {
     scheme: JSON.parse(JSON.stringify(NotSampleScheme)),
 };
 
+// Events
+
+var EventScheme = {
+    id: 'PlaceScheme',
+    type: 'shuffle-column',
+    childs: [
+        {
+            id: 'music-concerts-and-performances-group',
+            type: 'shuffle-row',
+            childs: [
+                {
+                    id: 'event-is-music-concerts-and-performances',
+                    type: 'shuffle-filter-intersection',
+                    params: [
+                        {
+                            name: 'What',
+                            type: 'set',
+                            source: 'inline',
+                            value: ['music-concerts-and-performances'],
+                        },
+                        {
+                            name: 'Where',
+                            type: 'set',
+                            source: 'incoming',
+                            key: "event",
+                        }
+                    ]
+                },
+                {
+                    id: 'music-concerts-and-performances-column',
+                    type: 'shuffle-column',
+                    childs: [
+                      	{
+                            id: 'mapping-vip-backstage-tours-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['vip-backstage-tours'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['follow-celebrities'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'eco-friendly-initiatives-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['eco-friendly-initiatives'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['spend-my-time-in-a-good-way'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'local-flavor-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['local-flavor'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['expending-my-horizons', 'open-to-new-experiences'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'food-and-drinks-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['food-and-drinks'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['loving-spouses', 'with-children', 'with-the-other-half', 'with-friends'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'interactive-visual-effects-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['interactive-visual-effects'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['open-to-new-impressions'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'spectator-participation-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['spectator-participation'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['like-to-sing', 'like-to-dance'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'charity-events-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['charity-events'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['spend-my-time-in-a-good-way'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: '-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-event',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: [''],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'event',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: [''],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+}
+
+var ActiveTigerInCelineDionConcert = {
+    id: 'ActiveTigerInCelineDionConcert',
+    type: 'filtering',
+    params: {
+        incoming: {
+            // ActiveTiger
+            'user': [
+                'active-tiger',
+                'stripes',
+                'melomaniac',
+                'drinker',
+                'like-to-sing',
+                'like-to-dance',
+                'follow-celebrities',
+                'celebration-person',
+                'love-country',
+              	'love-blues',
+              	'love-folk',
+              	'love-jazz',
+              	'love-chanson',
+              	'love-electronic-music',
+                'love-rock',
+              	'love-hip-hop',
+              	'love-reggae',
+              	'love-funk',
+              	'love-disco',
+              	'love-pop',
+              	'love-metal',
+                'like-extreme',
+                'like-beautiful-photos',
+                'gambling',
+                'like-active-vacations',
+                'party-person',
+                'with-friends',
+              	'in-on-the-joke',
+                'open-to-new-impressions',
+                'live-in-a-non-stop-rhythm',
+              	'spend-my-time-in-a-good-way', 
+                'hedonist',
+            ],
+            // Celine Dion Concert
+            'event': [
+                'celine-dion-concert',
+                'music-concerts-and-performances',
+                'vip-backstage-tours',
+                'interactive-visual-effects',
+            ],
+        },
+    },
+    scheme: JSON.parse(JSON.stringify(EventScheme)),
+};
+
+// Random Generation
+
 function generateChain(numChildren, maxDepth, isLastFilter = true) {
     var chain = {
         id: 'Chain',
@@ -2237,4 +2666,8 @@ if (typeof window !== 'undefined') {
     window.chains.push({ name: 'JoinSampleChain', value: JoinSampleChain });
     window.chains.push({ name: 'OrderSampleChain', value: OrderSampleChain });
     window.chains.push({ name: 'NotSampleChain', value: NotSampleChain });
+
+    //Event. index from 19
+    window.chains.push({ name: 'ActiveTigerInCelineDionConcert', value: ActiveTigerInCelineDionConcert });
+    
 }
