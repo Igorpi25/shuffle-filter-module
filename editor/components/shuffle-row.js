@@ -11,8 +11,13 @@ Vue.component('shuffle-row', {
     },
     props: ['id'],
     template: `
-    <div @focus="onFocus" tabindex="-1" class="flex flex-row w-fit h-fit p-2 space-x-2 justify-center items-center bg-blue-100 outline-indigo-600 outline-1 hover:outline-dashed focus:outline focus:outline-2"> 
-        <slot></slot>
+    <div @focus="onFocus" tabindex="-1" :title="id" class="flex flex-col p-1 items-center bg-blue-100 outline-indigo-600 outline-1 hover:outline-dashed focus:outline focus:outline-2">
+        <div class="w-32 h-4 truncate text-xs text-center text-gray-500">
+            {{id}}
+        </div>
+        <div class="flex flex-row w-fit h-fit p-1 space-x-2 justify-center items-center"> 
+            <slot></slot>
+        </div>
     </div>
     `,
 });
