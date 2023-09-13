@@ -184,21 +184,21 @@ var CommonScheme = {
     type: 'shuffle-column',
     childs: [
         {
-            id: 'Restoran group',
+            id: 'restaurant-group',
             type: 'shuffle-row',
             childs: [
                 {
-                    id: 'Рестораны',
+                    id: 'place-is-restaurant',
                     type: 'shuffle-filter-intersection',
                     params: [
                         {
-                            name: 'Alpha',
+                            name: 'What',
                             type: 'set',
                             source: 'inline',
-                            value: ['Рестораны'],
+                            value: ['restaurant'],
                         },
                         {
-                            name: 'Beta',
+                            name: 'Where',
                             type: 'set',
                             source: 'incoming',
                             key: "place",
@@ -206,25 +206,25 @@ var CommonScheme = {
                     ]
                 },
                 {
-                    id: 'Свойства ресторана',
+                    id: 'restaurant-column',
                     type: 'shuffle-column',
                     childs: [
-                        {
-                            id: 'Cofe',
+                      	{
+                            id: 'mapping-air-conditioners-on-terrace-to-user',
                             type: 'shuffle-row',
                             childs: [
                                 {
-                                    id: 'Вкусный кофе',
+                                    id: 'property-place',
                                     type: 'shuffle-filter-intersection',
                                     params: [
                                         {
-                                            name: 'Свойство',
+                                            name: 'What',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['Вкусный кофе'],
+                                            value: ['air-conditioners-on-terrace'],
                                         },
                                         {
-                                            name: 'Place',
+                                            name: 'Where',
                                             type: 'set',
                                             source: 'incoming',
                                             key: 'place',
@@ -232,17 +232,17 @@ var CommonScheme = {
                                     ]
                                 },
                                 {
-                                    id: 'Свойства',
+                                    id: 'property-user',
                                     type: 'shuffle-filter-intersection',
                                     params: [
                                         {
-                                            name: 'Свойства',
+                                            name: 'What',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['Ценитель кофе', 'Гурман', 'Гедонист'],
+                                            value: ['loving-spouses', 'with-the-other-half'],
                                         },
                                         {
-                                            name: 'User',
+                                            name: 'Where',
                                             type: 'set',
                                             source: 'incoming',
                                             key: 'user',
@@ -252,21 +252,21 @@ var CommonScheme = {
                             ],
                         },
                         {
-                            id: 'Live music',
+                            id: 'mapping-tasty-coffee-to-user',
                             type: 'shuffle-row',
                             childs: [
                                 {
-                                    id: 'Живая музыка',
+                                    id: 'property-place',
                                     type: 'shuffle-filter-intersection',
                                     params: [
                                         {
-                                            name: 'Свойство',
+                                            name: 'What',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['Живая музыка'],
+                                            value: ['tasty-coffee'],
                                         },
                                         {
-                                            name: 'Place',
+                                            name: 'Where',
                                             type: 'set',
                                             source: 'incoming',
                                             key: 'place',
@@ -274,17 +274,17 @@ var CommonScheme = {
                                     ]
                                 },
                                 {
-                                    id: 'Свойства',
+                                    id: 'property-user',
                                     type: 'shuffle-filter-intersection',
                                     params: [
                                         {
-                                            name: 'Свойства',
+                                            name: 'What',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['Меломан', 'Люблю танцевать', 'Человек-праздник', 'Живу в ритме нон-стоп'],
+                                            value: ['coffee-connoisseur', 'selective-person', 'hedonist'],
                                         },
                                         {
-                                            name: 'User',
+                                            name: 'Where',
                                             type: 'set',
                                             source: 'incoming',
                                             key: 'user',
@@ -294,21 +294,21 @@ var CommonScheme = {
                             ],
                         },
                         {
-                            id: 'Childs room',
+                            id: 'mapping-live-music-to-user',
                             type: 'shuffle-row',
                             childs: [
                                 {
-                                    id: 'Детская комната',
+                                    id: 'property-place',
                                     type: 'shuffle-filter-intersection',
                                     params: [
                                         {
-                                            name: 'Свойство',
+                                            name: 'What',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['Детская комната'],
+                                            value: ['live-music'],
                                         },
                                         {
-                                            name: 'Place',
+                                            name: 'Where',
                                             type: 'set',
                                             source: 'incoming',
                                             key: 'place',
@@ -316,17 +316,227 @@ var CommonScheme = {
                                     ]
                                 },
                                 {
-                                    id: 'Свойства',
+                                    id: 'property-user',
                                     type: 'shuffle-filter-intersection',
                                     params: [
                                         {
-                                            name: 'Свойства',
+                                            name: 'What',
                                             type: 'set',
                                             source: 'inline',
-                                            value: ['С детьми', 'Семьянин'],
+                                            value: ['melomaniac', 'like-to-dance ', 'celebration-person', 'live-in-a-non-stop-rhythm'],
                                         },
                                         {
-                                            name: 'User',
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'mapping-children-room-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-place',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['children-room'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['with-children'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                        {
+                            id: 'mapping-bay-view-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-place',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['bay-view'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['aesthete', 'with-the-other-half'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                       {
+                            id: 'mapping-city-view-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-place',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['city-view'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['aesthete', 'with-the-other-half'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                       {
+                            id: 'mapping-large-portions-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-place',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['large-portions'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['hearty-eater', 'loving-spouses'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'user',
+                                        }
+                                    ]
+                                },
+                            ],
+                        },
+                      {
+                            id: 'mapping-wine-list-to-user',
+                            type: 'shuffle-row',
+                            childs: [
+                                {
+                                    id: 'property-place',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['wine-list'],
+                                        },
+                                        {
+                                            name: 'Where',
+                                            type: 'set',
+                                            source: 'incoming',
+                                            key: 'place',
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: 'property-user',
+                                    type: 'shuffle-filter-intersection',
+                                    params: [
+                                        {
+                                            name: 'What',
+                                            type: 'set',
+                                            source: 'inline',
+                                            value: ['wine-connoisseur', 'selective-person'],
+                                        },
+                                        {
+                                            name: 'Where',
                                             type: 'set',
                                             source: 'incoming',
                                             key: 'user',
@@ -658,44 +868,52 @@ var ActiveTigerInFamilyRestoran = {
     id: 'ActiveTigerInFamilyRestoran',
     type: 'filtering',
     params: {
-        local: {
-            'ballooning-fest': ['sunday', 'beach', 'family'],
-            'hollydays': ['sunday', 'saturday'],
-        },
         incoming: {
             // ActiveTiger
             'user': [
-                'ActiveTiger',
-                'Меломан',
-                'Любитель выпить',
-                'Люблю танцевать ',
-                'Слежу за знаменитостями',
-                'Человек - праздник',
-                'Люблю музыку',
-                'Фолк',
-                'Кантри','Блюз',
-                'Люблю экстрим',
-                'Люблю красивые фото',
-                'Азартный',
-                'Люблю активный отдых',
-                'Тусовщик',
-                'С друзьями',
-                'На приколе',
-                'Открыт к новым впечатлениям',
-                'Живу в ритме нон-стоп',
-                'Провожу время с пользой',
-                'Гедонист',
+                'active-tiger',
+                'stripes',
+                'melomaniac',
+                'drinker',
+                'like-to-sing',
+                'like-to-dance',
+                'follow-celebrities',
+                'celebration-person',
+                'love-country',
+              	'love-blues',
+              	'love-folk',
+              	'love-jazz',
+              	'love-chanson',
+              	'love-electronic-music',
+								'love-rock',
+              	'love-hip-hop',
+              	'love-reggae',
+              	'love-funk',
+              	'love-disco',
+              	'love-pop',
+              	'love-metal',
+                'like-extreme',
+                'like-beautiful-photos',
+                'gambling',
+                'like-active-vacations',
+                'party-person',
+                'with-friends',
+              	'in-on-the-joke',
+                'open-to-new-impressions',
+                'live-in-a-non-stop-rhythm',
+              	'spend-my-time-in-a-good-way', 
+                'hedonist',
             ],
             // Family Restoran
             'place': [
-                'Family Restoran',
-                'Рестораны',
-                'Винная карта',
-                'Чайная карта',
-                'Спокойная атмосфера',
-                'Веганское меню',
-                'Алкогольная карта',
-                'Детская комната',
+                'family-restoran',
+                'restaurant',
+                'wine-list',
+                'tea-list',
+                'craft-beer',
+                'vegan-menu',
+                'alcoholic-menu',
+                'сhildren-room',
             ],
         },
     },
