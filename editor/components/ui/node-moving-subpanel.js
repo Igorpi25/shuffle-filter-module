@@ -1,83 +1,83 @@
 Vue.component('node-moving-subpanel', {
     props: {
-        selectedItem: Object,
+        selectedElement: Object,
     },
-    emits: ['on-move-item', 'on-remove-item'],
+    emits: ['on-move-element', 'on-remove-element'],
     data() {
         return {
-            newItemType: "shuffle-column",
+            newElementType: "shuffle-column",
         };
     },
     methods: {
-        addNewItem() {
-            switch (this.newItemType) {
+        addNewElement() {
+            switch (this.newElementType) {
                 case "shuffle-column":
-                    return this.addNewColumnItem()
+                    return this.addNewColumnElement()
                 case "shuffle-row":
-                    return this.addNewRowItem()
+                    return this.addNewRowElement()
                 case "shuffle-filter":
-                    return this.addNewFilterItem()
+                    return this.addNewFilterElement()
                 default:
-                    throw new Error(`Unsupported type ${this.newItemType} for operate.`)
+                    throw new Error(`Unsupported type ${this.newElementType} for operate.`)
             }
         },
-        addNewFilterItem() {
-            const newItem = {
+        addNewFilterElement() {
+            const newElement = {
                 id: Math.random().toString(36).substr(2, 3),
-                type: this.newItemType,
+                type: this.newElementType,
                 result: !!Math.random(),
             };
-            this.selectedItem.childs.push(newItem);
+            this.selectedElement.childs.push(newElement);
         },
-        addNewColumnItem() {
-            const newItem = {
+        addNewColumnElement() {
+            const newElement = {
                 id: Math.random().toString(36).substr(2, 3),
-                type: this.newItemType,
+                type: this.newElementType,
                 childs: [],
             };
-            this.selectedItem.childs.push(newItem);
+            this.selectedElement.childs.push(newElement);
         },
-        addNewRowItem() {
-            const newItem = {
+        addNewRowElement() {
+            const newElement = {
                 id: Math.random().toString(36).substr(2, 3),
-                type: this.newItemType,
+                type: this.newElementType,
                 childs: [],
             };
-            this.selectedItem.childs.push(newItem);
+            this.selectedElement.childs.push(newElement);
         },
-        moveItem(directionName) {
-            this.$emit("on-move-item", { direction: directionName, id: this.selectedItem.id })
+        moveElement(directionName) {
+            this.$emit("on-move-element", { direction: directionName, id: this.selectedElement.id })
         },
-        deleteItem() {
-            this.$emit("on-remove-item", this.selectedItem.id)
+        deleteElement() {
+            this.$emit("on-remove-element", this.selectedElement.id)
         },
     },
     template: `
-    <div v-if="selectedItem.type" class="node-moving-subpanel">
-        <div v-if="selectedItem.type === 'shuffle-column' || selectedItem.type === 'shuffle-row'">
+    <div v-if="selectedElement.type">
+        <div v-if="selectedElement.type === 'shuffle-column' || selectedElement.type === 'shuffle-row'">
             <p>New</p>
-            <div class="add-new-item">
-                <select v-model="newItemType">
+            <div class="add-new-element">
+                <select v-model="newElementType">
                     <option value="shuffle-column">shuffle-column</option>
                     <option value="shuffle-row">shuffle-row</option>
                     <option value="shuffle-filter">shuffle-filter</option>
                 </select>
-                <button @click="addNewItem" class="px-6 py-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-r-lg focus:outline-none focus:ring focus:border-blue-300">Add new</button>
+                <button @click="addNewElement" class="px-6 py-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-r-lg focus:outline-none focus:ring focus:border-blue-300">Add new</button>
             </div>
         </div>
 
-        <div v-if="selectedItem.type === 'shuffle-filter'">
+        <div>
             <p>Move</p>
-            <div class="move-item">
-                <button @click="moveItem('forward')" class="px-6 py-1 bg-yellow-300 hover:bg-yellow-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">Forward</button>
-                <button @click="moveItem('backward')" class="px-6 py-1 bg-lime-600 hover:bg-lime-500 text-white font-semibold rounded focus:outline-none focus:ring focus:bg-lime-600">Backward</button>
+            <div class="move-element">
+                <button @click="moveElement('backward')" class="px-6 py-1 bg-lime-600 hover:bg-lime-500 text-white font-semibold rounded focus:outline-none focus:ring focus:bg-lime-600">Backward</button>
+                <button @click="moveElement('forward')" class="px-6 py-1 bg-yellow-300 hover:bg-yellow-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">Forward</button>
             </div >
         </div>
 
         <div>
             <p>Delete</p>
-            <div class="move-item">
-                <button @click="deleteItem" class="px-6 py-1 bg-red-500 hover:bg-red-600 text-white font-semibold rounded focus:outline-none focus:ring focus:border-red-300">Delete</button>
+            <div class="move-element">
+                <button @click="deleteElement" class="px-6 py-1 bg-red-500 hover:bg-red-600 text-white font-semibold rounded focus:outline-none focus:ring focus:border-red-300">Delete</button>
             </div >
         </div>
     </div>

@@ -5,30 +5,19 @@ Vue.component('shuffle-chain', {
             required: true,
         },
     },
-    emits: ['on-select-item'],
+    emits: ['on-select-child'],
     data: function () {
         return {}
     },
     methods: {
-        onChildrenSelectItem(item) {
-            if (item) {
-                this.$emit("on-select-item", item)
-            }
+        onSelectId(id) {
+            eventHub.$emit('on-select-element', this.schema);
         },
-        onSelectById(id) {
-            var item = this.selectElementById(id);
-            if (item) {
-                this.$emit("on-select-item", item)
-            }
-        },
-        selectElementById(id) {
-            return findChildById(this.$props.schema, id)
-        }
     },
     template: `
-    <component :is="schema.type" :id="schema.id" @on-select-id="onSelectById">
+    <component :is="schema.type" :id="schema.id" @on-select-id="onSelectId">
         <template v-if="schema.childs">
-            <shuffle-chain v-for="child in schema.childs" :key="child.id" :schema="child" :id="child.id" @on-select-item="onChildrenSelectItem"/>
+            <shuffle-chain v-for="child in schema.childs" :key="child.id" :schema="child" :id="child.id"/>
         </template>
         <template v-if="schema.type === 'shuffle-aggregation-list'">
             <div v-for="param in schema.params">

@@ -7,171 +7,25 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router@3.0.0/dist/vue-router.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        .flex-grow {
-            flex-grow: 1;
-        }
-        .sidebar {
-            width: 20rem;
-            flex-shrink: 0;
-        }
-        @keyframes blink-animation {
-            0%, 100% {
-                outline-width: 2px;
-                outline-style: solid;
-                outline-color:red;
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-                outline-width: 2px;
-                outline-style: solid;
-                outline-color: #4f46e5;
-            }
-        }
-
-        .blink-animation {
-            animation: blink-animation 0.3s 2;
-        }
-    </style>
+    <!-- <base href="https://igorpi25.github.io/shuffle-filter-module/editor/" /> -->
+    <base href="" />
 </head>
 
 <body>
-    <div id="app" @focus="onSelectItem({})" tabindex="-1" class="flex bg-white">
-
-        <!-- White board -->
-        <div class="flex flex-grow bg-white py-16 px-2 space-x-2 overflow-scroll">
-            <!-- Params -->
-            <div class="flex flex-col space-y-2 border p-4">
-                <!-- Url Params -->
-                <div class="flex flex-col p-2 border"> 
-                    <div>URL params:</div>
-                    <div v-for="(value, key) in getUrlParams()" class="p-2 bg-gray-100">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-                <!-- Incoming -->
-                <div v-if="scheme.params?.incoming" class="flex flex-col w-80 h-fit p-2 space-y-2 border border-blue-100 justify-center items-strech">
-                    <div class="flex justify-start">Incoming params:</div>
-                    <div v-if="scheme.type=='aggregation'" class="flex flex-col space-y-4 p-2">
-                        <div class="flex flex-col space-y-2">
-                            <div>chain:</div> 
-                            <div class="text-xs text-gray-400 p-2 bg-gray-100">
-                                {{scheme.id}}
-                            </div>
-                            <div>user:</div>
-                            <div class="text-xs text-gray-400 p-2 bg-gray-100">
-                                {{scheme.params.incoming.scheme.params.incoming.user}}
-                            </div>
-                            <div>places:</div>
-                            <div v-for="item in scheme.params.incoming.items" class="p-2 bg-gray-100">
-                                <div>{{item.id}}</div>
-                                <div class="text-xs text-gray-400">{{item.value}}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-else v-for="(value, key) in scheme.params?.incoming" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
-                        <span>{{key}}: {{value}}</span>
-                    </div>
-                </div>
-                <!-- Local -->
-                <div v-if="scheme.params?.local" class="flex flex-col w-80 h-fit p-2 space-y-2 border justify-center items-strech">
-                    <div class="flex justify-start">Local params:</div>
-                    <div v-for="(value, key) in scheme.params?.local" :key="key" class="flex bg-gray-100 p-2 justify-start text-sm">
-                        {{key}}: {{value}}
-                    </div>
-                </div>
-            </div>
-
-            <div v-if="scheme.scheme" class="flex-none text-gray-400">
-                ->
-            </div>
-        
-            <!-- Scheme -->
-            <div v-if="scheme.scheme" class="flex flex-col w-fit h-fit p-2 space-y-2 border justify-center items-strech">
-                <div class="flex justify-start">Scheme</div>
-                <shuffle-chain :schema="scheme.scheme" @on-select-item="onSelectItem" />
-            </div>
-
-            <div v-if="scheme.scheme" class="flex-none text-gray-400">
-                ->
-            </div>
-
-            <!-- Result -->
-            <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-row')||(scheme.scheme.type=='shuffle-column')||(scheme.scheme.type=='shuffle-filter')||((scheme.scheme.type=='shuffle-filter-intersection')))" class="flex items-center justify-center w-16 h-16 border">
-                <span class="text-gray-400">{{runSchemeResult}}</span>
-            </div>  
-            <div v-if="(scheme.scheme)&&((scheme.scheme.type=='shuffle-aggregation-list')||(scheme.scheme.type=='shuffle-aggregation-filter')||(scheme.scheme.type=='shuffle-aggregation-join')||(scheme.scheme.type=='shuffle-aggregation-order'))" class="flex flex-col space-y-2 p-2 w-80 h-fit border">
-                <div v-for="child in runSchemeResult" class="text-gray-600 p-2  bg-stone-100">
-                    {{child.id}}
-                </div>
-            </div>  
-             
-        </div>
-
-        <!-- Side Menu -->
-        <div tabindex="-1" class="flex-grow bg-gray-100  w-40 h-screen">
-            <!-- Selected Element panel -->
-            <div v-if="selectedItemIsNotEmpty" class="flex flex-col border-1 border">
-                <node-panel :scheme="scheme" :selected-element="selectedItem" />
-            </div>
-            <!-- Save/Load scheme panel -->
-            <div v-else>
-                <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                    <h2 class="text-bold">File</h2>
-                </div>
-                <div class="flex flex-col p-2 space-y-2">
-                    <button @click="downloadScheme()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                        Save as ...
-                    </button>
-                    <button @click="openScheme()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                        Open
-                    </button>
-                </div>
-                <div class="flex bg-gray-200 p-2 rounded-b-lg">
-                    <h2 class="text-bold">Local Storage</h2>
-                </div>
-                <div class="flex flex-col p-2 space-y-2">
-                    <div v-for="(item, index) in savedSchemes" class="flex flex-col">
-                        <div class="flex flex-col">
-                            <span class="font-bold">{{item.id}}</span>
-                            <span class="text-xs">{{item.savedAt}}</span>
-                        </div>
-                        <div class="flex">
-                            <div>
-                                <button @click="loadSchemeFromLocaleStorage(index)" class="text-xs p-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                                    Load
-                                </button>
-                            </div>
-                            <div class="flex flex-col grow items-end space-y-1">
-                                <button @click="updateSchemeInLocaleStorage(index)" class="text-xs p-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                                    Update
-                                </button>
-                                <button @click="deleteSchemeFromLocaleStorage(index)" class="text-xs p-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                                    Remove
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button @click="saveSchemeInLocaleStorage()" class="px-6 py-1 bg-yellow-300 hover:bg-blue-200 text-amber-950 font-semibold rounded focus:outline-none focus:ring focus:bg-yellow-300">
-                        Add
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div id="app" class="flex h-screen w-screen">
+        <white-board :scheme="this.scheme" class="grow"></white-board>
+        <side-menu :scheme="this.scheme" class=""></side-menu>
     </div>
-
-    <script src="../schemas.js"></script>  
+    <link rel="stylesheet" href="styles.css">
+    <script src="../schemas.js"></script>
     <script src="../core/schemeSearch.js"></script>
     <script src="../core/schemeRunner.js"></script>
     <script src="components/ui/collapse-extend-text.js"></script>
     <script src="components/ui/node-moving-subpanel.js"></script>
     <script src="components/ui/node-panel.js"></script>
+    <script src="components/ui/save-load-panel.js"></script>
+    <script src="components/ui/side-menu.js"></script>
+    <script src="components/ui/white-board.js"></script>
     <script src="components/shuffle-param.js"></script>
     <script src="components/shuffle-params-group.js"></script>
     <script src="components/shuffle-scheme.js"></script>

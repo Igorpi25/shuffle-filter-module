@@ -1,8 +1,9 @@
 Vue.component('node-panel', {
-    props: ['scheme', 'selectedElement'],
+    props: ['scheme'],
     data() {
         return {
             inlineParamValue: '',
+            selectedElement: {},
         };
     },
     computed: {
@@ -26,8 +27,8 @@ Vue.component('node-panel', {
         },
     },
     methods: {
-        selectElementById(id) {
-            return findChildById(this.$props.scheme.scheme, id)
+        selectElement(element) {
+            this.selectedElement = element;
         },
         selectParentById(id) {
             return findParentByChildId(this.$props.scheme.scheme, id)
@@ -37,7 +38,7 @@ Vue.component('node-panel', {
                 return runElement({scheme: this.$props.scheme, element: element});
             }
 
-            if (this.$props.selectedElement) {
+            if (this.selectedElement) {
                 return runElement({scheme: this.$props.scheme, element: this.selectedElement});
             }
         },
@@ -46,12 +47,12 @@ Vue.component('node-panel', {
 
             const blinkMeAndFocus = () => {
                 this.$nextTick(() => {
-                    const selectedItemElement = document.getElementById(this.selectedElement.id);
-                    if (selectedItemElement) {
-                        selectedItemElement.classList.add('blink-animation');
+                    const selectedDOMElement = document.getElementById(this.selectedElement.id);
+                    if (selectedDOMElement) {
+                        selectedDOMElement.classList.add('blink-animation');
                         setTimeout(() => {
-                            selectedItemElement.classList.remove('blink-animation');
-                            selectedItemElement.focus();
+                            selectedDOMElement.classList.remove('blink-animation');
+                            selectedDOMElement.focus();
                         }, 5000);
                     }
                 });
@@ -89,6 +90,8 @@ Vue.component('node-panel', {
                     parent.childs.splice(index, 1);
                 }
             }
+
+            eventHub.$emit('on-select-element', {});
         },
         saveInlineParamValue() {
             if (this.selectedElement && this.selectedElement.params) {
@@ -103,6 +106,9 @@ Vue.component('node-panel', {
                 }
             }
         },
+    },
+    created: function () {
+        eventHub.$on('on-select-element', this.selectElement);
     },
     template: `
     <div v-if="selectedElement" class="flex flex-col border-1 border">
@@ -195,11 +201,11 @@ Vue.component('node-panel', {
                 <h2 class="text-bold">Operations</h2>
             </div>
             <div class="flex flex-col p-2">
-                <node-moving-subpanel :selected-item="selectedElement" @on-move-item="handlerOnMoveElement" @on-remove-item="handlerOnRemoveElement" />
+                <node-moving-subpanel :selected-element="selectedElement" @on-move-element="handlerOnMoveElement" @on-remove-element="handlerOnRemoveElement" />
             </div>
         </div>
 
-        <!-- Selected item dump -->
+        <!-- Selected element dump -->
         <div>
             <div class="flex bg-gray-200 p-2 rounded-b-lg">
                 <h2 class="text-bold">Raw</h2>
